@@ -74,9 +74,9 @@ const VideoSection = () => {
         <div className="h-40" />
         <div className="max-w-5xl w-full flex items-center gap-12">
           <p className="text-foreground/50 text-sm whitespace-nowrap shrink-0">
-            Relied on by brands
+            Trusted across
             <br />
-            across the globe
+            corridors worldwide
           </p>
           <div className="overflow-hidden flex-1">
             <div className="flex animate-marquee gap-16">

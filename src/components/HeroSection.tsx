@@ -13,16 +13,16 @@ const HeroSection = () => {
             backgroundImage: "linear-gradient(223deg, #E8E8E9 0%, #3A7BBF 104.15%)",
           }}
         >
-          Grow
+          Cleora
         </h1>
         <p className="text-hero-sub text-center text-lg leading-8 max-w-md mt-4 opacity-80">
-          The most powerful AI ever deployed
+          Autonomous AI agents that settle
           <br />
-          in talent acquisition
+          cross-border payments in under 5 minutes — for 0.5%
         </p>
         <div className="mt-8 mb-[66px]">
           <Button variant="heroSecondary" className="px-[29px] py-[24px]">
-            Schedule a Consult
+            Start Sending
           </Button>
         </div>
       </div>

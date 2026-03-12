@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.svg";
 
 const navItems = [
-  { label: "Features", hasDropdown: true },
-  { label: "Solutions", hasDropdown: false },
-  { label: "Plans", hasDropdown: false },
-  { label: "Learning", hasDropdown: true },
+  { label: "How It Works", hasDropdown: false },
+  { label: "Corridors", hasDropdown: false },
+  { label: "Agents", hasDropdown: true },
+  { label: "Docs", hasDropdown: false },
 ];
 
 const Navbar = () => {
