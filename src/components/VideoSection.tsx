@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const brands = ["Vortex", "Nimbus", "Prysma", "Cirrus", "Kynder", "Halcyn"];
+const brands = ["UAE → India", "USD₮", "XAU₮", "WDK", "OpenClaw", "Tether"];
 
 const VideoSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
