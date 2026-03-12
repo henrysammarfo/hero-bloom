@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 const navItems = [
   { label: "Features", hasDropdown: true },
