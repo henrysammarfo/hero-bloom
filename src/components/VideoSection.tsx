@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const brands = ["UAE → India", "USD₮", "XAU₮", "WDK", "OpenClaw", "Tether"];
+const brands = ["WDK", "OpenClaw", "USD₮", "Sepolia", "Supabase", "Alchemy"];
 
 const VideoSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -74,9 +74,9 @@ const VideoSection = () => {
         <div className="h-40" />
         <div className="max-w-5xl w-full flex items-center gap-12">
           <p className="text-foreground/50 text-sm whitespace-nowrap shrink-0">
-            Trusted across
+            Built with
             <br />
-            corridors worldwide
+            the best infra
           </p>
           <div className="overflow-hidden flex-1">
             <div className="flex animate-marquee gap-16">

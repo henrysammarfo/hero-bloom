@@ -4,8 +4,8 @@ import logo from "@/assets/logo.svg";
 
 const navItems = [
   { label: "How It Works", hasDropdown: false },
-  { label: "Corridors", hasDropdown: false },
-  { label: "Agents", hasDropdown: true },
+  { label: "Operators", hasDropdown: false },
+  { label: "LPs", hasDropdown: true },
   { label: "Docs", hasDropdown: false },
 ];
 
@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="w-full py-5 px-8 flex flex-row justify-between items-center">
-        <img src={logo} alt="Logo" className="h-8" />
+        <img src={logo} alt="CIRCUIT Logo" className="h-8" />
         <div className="flex items-center gap-1">
           {navItems.map((item) => (
             <button
@@ -26,7 +26,7 @@ const Navbar = () => {
           ))}
         </div>
         <Button variant="heroSecondary" size="sm" className="rounded-full px-4 py-2">
-          Sign Up
+          Launch App
         </Button>
       </nav>
       <div className="mt-[3px] w-full h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
