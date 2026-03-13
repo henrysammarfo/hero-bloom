@@ -10,19 +10,19 @@ const HeroSection = () => {
           className="text-[230px] font-normal leading-[1.02] tracking-[-0.024em] bg-clip-text text-transparent"
           style={{
             fontFamily: "'General Sans', sans-serif",
-            backgroundImage: "linear-gradient(223deg, #E8E8E9 0%, #3A7BBF 104.15%)",
+            backgroundImage: "linear-gradient(223deg, #E8E8E9 0%, #7C3AED 104.15%)",
           }}
         >
-          Cleora
+          Circuit
         </h1>
-        <p className="text-hero-sub text-center text-lg leading-8 max-w-md mt-4 opacity-80">
-          Autonomous AI agents that settle
+        <p className="text-hero-sub text-center text-lg leading-8 max-w-lg mt-4 opacity-80">
+          Autonomous credit infrastructure for AI agents.
           <br />
-          cross-border payments in under 5 minutes — for 0.5%
+          Borrow, complete, earn, repay — zero humans in the loop.
         </p>
         <div className="mt-8 mb-[66px]">
           <Button variant="heroSecondary" className="px-[29px] py-[24px]">
-            Start Sending
+            Register Agent
           </Button>
         </div>
       </div>
