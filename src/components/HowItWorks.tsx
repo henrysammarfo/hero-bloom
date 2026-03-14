@@ -9,9 +9,6 @@ const steps = [
     description:
       "Reads on-chain history via Alchemy. Evaluates 5 dimensions — task completion rate, revenue consistency, client diversity, history length, operator reputation. Outputs a credit limit in USDT + risk tier (A/B/C).",
     mechanic: "LLM-powered · Claude Haiku 3.5",
-    accentClass: "from-primary/20 to-primary/5",
-    borderClass: "border-primary/20",
-    iconBg: "bg-primary/10",
   },
   {
     icon: RefreshCw,
@@ -20,9 +17,6 @@ const steps = [
     description:
       "Agent draws USDT from pool at task start via WDK. Completes task. Earns revenue. CIRCUIT auto-intercepts principal + 3% interest before remainder goes to operator. No human action required.",
     mechanic: "WDK wallet · Auto-sweep trigger",
-    accentClass: "from-success/20 to-success/5",
-    borderClass: "border-success/20",
-    iconBg: "bg-success/10",
   },
   {
     icon: Vault,
@@ -31,9 +25,6 @@ const steps = [
     description:
       "LPs deposit USDT via WDK. Pool lends to agent credit lines. 13.5% interest from agents distributes 12% to LPs with 1.5% spread to CIRCUIT. Max 5% exposure per agent, 20% per operator.",
     mechanic: "Non-custodial · Weekly sweep",
-    accentClass: "from-info/20 to-info/5",
-    borderClass: "border-info/20",
-    iconBg: "bg-info/10",
   },
 ];
 
@@ -55,74 +46,70 @@ const HowItWorks = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-background py-32 px-4 overflow-hidden"
+      className="relative py-32 px-4 overflow-hidden"
+      style={{ background: "hsl(0, 0%, 0%)" }}
     >
-      {/* Subtle grid texture */}
+      {/* Subtle radial glow */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, hsl(262, 83%, 58%, 0.04) 0%, transparent 70%)" }}
       />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="mb-20">
-          <p className="text-muted-foreground text-sm tracking-widest uppercase mb-4">
+          <p className="text-sm tracking-widest uppercase mb-4" style={{ color: "hsl(0, 0%, 55%)" }}>
             The autonomous credit cycle
           </p>
           <h2
-            className="text-5xl md:text-6xl font-semibold tracking-tight text-foreground"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
+            className="text-5xl md:text-6xl font-semibold tracking-tight"
+            style={{ fontFamily: "'General Sans', sans-serif", color: "hsl(0, 0%, 95%)" }}
           >
             Three agents.
             <br />
-            <span className="text-muted-foreground">Zero humans.</span>
+            <span style={{ color: "hsl(0, 0%, 55%)" }}>Zero humans.</span>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: "hsl(0, 0%, 12%)" }}>
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
               <div
                 key={step.label}
                 className={`
-                  relative group rounded-2xl border ${step.borderClass}
-                  bg-gradient-to-b ${step.accentClass}
-                  p-8 flex flex-col gap-6
+                  relative group p-8 flex flex-col gap-6
                   transition-all duration-700 ease-out
-                  ${visible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                  }
+                  ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
                 `}
-                style={{ transitionDelay: `${i * 150}ms` }}
+                style={{
+                  transitionDelay: `${i * 150}ms`,
+                  background: "hsl(0, 0%, 3%)",
+                }}
               >
-                {/* Step number */}
+                {/* Step number + icon */}
                 <div className="flex items-center justify-between">
                   <div
-                    className={`w-12 h-12 rounded-xl ${step.iconBg} flex items-center justify-center`}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: "hsl(0, 0%, 8%)" }}
                   >
-                    <Icon className="w-5 h-5 text-foreground" />
+                    <Icon className="w-5 h-5" style={{ color: "hsl(0, 0%, 95%)" }} />
                   </div>
-                  <span className="text-xs text-muted-foreground font-mono tracking-wider">
+                  <span className="text-xs font-mono tracking-wider" style={{ color: "hsl(0, 0%, 40%)" }}>
                     {step.label}
                   </span>
                 </div>
 
                 <div className="flex-1 flex flex-col gap-3">
-                  <h3 className="text-xl font-semibold text-foreground tracking-tight">
+                  <h3 className="text-xl font-semibold tracking-tight" style={{ color: "hsl(0, 0%, 95%)" }}>
                     {step.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm leading-relaxed" style={{ color: "hsl(0, 0%, 55%)" }}>
                     {step.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-border/50">
-                  <span className="text-xs text-muted-foreground font-mono flex items-center gap-2">
+                <div className="pt-4" style={{ borderTop: "1px solid hsl(0, 0%, 10%)" }}>
+                  <span className="text-xs font-mono flex items-center gap-2" style={{ color: "hsl(0, 0%, 40%)" }}>
                     <Zap className="w-3 h-3" />
                     {step.mechanic}
                   </span>
@@ -131,8 +118,11 @@ const HowItWorks = () => {
                 {/* Connector arrow for non-last cards (desktop) */}
                 {i < steps.length - 1 && (
                   <div className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20">
-                    <div className="w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center">
-                      <ArrowRight className="w-3 h-3 text-muted-foreground" />
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ background: "hsl(0, 0%, 8%)", border: "1px solid hsl(0, 0%, 15%)" }}
+                    >
+                      <ArrowRight className="w-3 h-3" style={{ color: "hsl(0, 0%, 55%)" }} />
                     </div>
                   </div>
                 )}
@@ -153,8 +143,8 @@ const HowItWorks = () => {
             { value: "95%+", label: "Target repayment rate" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
-              <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              <p className="text-2xl font-semibold" style={{ color: "hsl(0, 0%, 95%)" }}>{stat.value}</p>
+              <p className="text-xs mt-1" style={{ color: "hsl(0, 0%, 55%)" }}>{stat.label}</p>
             </div>
           ))}
         </div>

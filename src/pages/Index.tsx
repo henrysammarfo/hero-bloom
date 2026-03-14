@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <>
+    <div className="dark">
       <HeroSection />
       <VideoSection />
       <div id="how-it-works">
@@ -16,7 +16,7 @@ const Index = () => {
         <LendingPool />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
