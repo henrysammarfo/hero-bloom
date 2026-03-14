@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import DashboardNavbar from "@/components/DashboardNavbar";
+import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
@@ -117,15 +117,14 @@ const AgentDetail = () => {
 
   if (!agent) {
     return (
-      <div className="min-h-screen bg-background">
-        <DashboardNavbar />
+      <DashboardLayout>
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <p className="text-muted-foreground text-lg">Agent not found.</p>
           <Button variant="heroSecondary" className="mt-6" onClick={() => navigate("/dashboard")}>
             Back to Dashboard
           </Button>
         </div>
-      </div>
+      </DashboardLayout>
     );
   }
 
@@ -134,8 +133,7 @@ const AgentDetail = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <DashboardNavbar />
+    <DashboardLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Back + header */}
         <button
@@ -277,7 +275,7 @@ const AgentDetail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

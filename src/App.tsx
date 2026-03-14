@@ -8,6 +8,9 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import AgentDetail from "./pages/AgentDetail.tsx";
+import Agents from "./pages/Agents.tsx";
+import Sessions from "./pages/Sessions.tsx";
+import SettingsPage from "./pages/SettingsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,9 @@ const AnimatedRoutes = () => {
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/:agentId" element={<AgentDetail />} />
+          <Route path="/agents" element={<Agents />} />
+          <Route path="/sessions" element={<Sessions />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
