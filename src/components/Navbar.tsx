@@ -34,17 +34,6 @@ const Navbar = () => {
       }
     }
   };
-    if (item.scrollTo) {
-      if (location.pathname !== "/") {
-        navigate("/");
-        setTimeout(() => {
-          document.getElementById(item.scrollTo!)?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } else {
-        document.getElementById(item.scrollTo)?.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   return (
     <>
