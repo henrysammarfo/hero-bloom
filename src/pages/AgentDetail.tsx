@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import DashboardNavbar from "@/components/DashboardNavbar";
+import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
