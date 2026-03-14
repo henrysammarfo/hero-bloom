@@ -19,14 +19,21 @@ const Navbar = () => {
 
   const handleNavClick = (item: typeof navItems[number]) => {
     setMobileOpen(false);
-    if (item.external) {
-      window.open(item.external, "_blank");
-      return;
-    }
     if (item.href) {
       navigate(item.href);
       return;
     }
+    if (item.scrollTo) {
+      if (location.pathname !== "/") {
+        navigate("/");
+        setTimeout(() => {
+          document.getElementById(item.scrollTo!)?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        document.getElementById(item.scrollTo)?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
     if (item.scrollTo) {
       if (location.pathname !== "/") {
         navigate("/");
