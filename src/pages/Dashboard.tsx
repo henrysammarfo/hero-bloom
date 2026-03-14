@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardNavbar from "@/components/DashboardNavbar";
+import DashboardLayout from "@/components/DashboardLayout";
 import RegisterAgentModal from "@/components/RegisterAgentModal";
-
 import { Button } from "@/components/ui/button";
 import {
   ArrowUpRight,
@@ -18,8 +17,6 @@ import {
   ExternalLink,
   Activity,
 } from "lucide-react";
-
-// ─── Mock data ──────────────────────────────────────────────────────────────
 
 const summaryStats = [
   { label: "Active Credit Lines", value: "47", change: "+3 this week", icon: Users, trend: "up" as const },
@@ -71,27 +68,9 @@ const recentDraws: DrawEvent[] = [
   { id: "TX-5", agentId: "AGT-006", agentName: "ContentGen Pro", type: "draw", amount: 50, timestamp: "18 min ago", txHash: "0x1c4a…b92d" },
 ];
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-const tierColor = (tier: RiskTier) => {
-  switch (tier) {
-    case "A": return "text-success";
-    case "B": return "text-warning";
-    case "C": return "text-destructive";
-  }
-};
-
-const statusDot = (status: Agent["status"]) => {
-  switch (status) {
-    case "active": return "bg-success";
-    case "idle": return "bg-muted-foreground";
-    case "flagged": return "bg-destructive";
-  }
-};
-
+const tierColor = (tier: RiskTier) => tier === "A" ? "text-success" : tier === "B" ? "text-warning" : "text-destructive";
+const statusDot = (status: Agent["status"]) => status === "active" ? "bg-success" : status === "idle" ? "bg-muted-foreground" : "bg-destructive";
 const utilPercent = (drawn: number, limit: number) => Math.round((drawn / limit) * 100);
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -99,30 +78,22 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const filteredAgents = agents.filter(
-    (a) =>
-      a.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.id.toLowerCase().includes(searchQuery.toLowerCase())
+    (a) => a.name.toLowerCase().includes(searchQuery.toLowerCase()) || a.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <DashboardNavbar />
+    <DashboardLayout>
       <RegisterAgentModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-10">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
-              Operator Dashboard
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              Wei's fleet · 47 active agents · Sepolia testnet
-            </p>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">Operator Dashboard</h1>
+            <p className="text-muted-foreground text-sm mt-1">Wei's fleet · 47 active agents · Sepolia testnet</p>
           </div>
           <Button variant="heroSecondary" className="gap-2 px-5 py-5 w-full sm:w-auto" onClick={() => setRegisterOpen(true)}>
-            <Plus className="w-4 h-4" />
-            Register Agent
+            <Plus className="w-4 h-4" /> Register Agent
           </Button>
         </div>
 
@@ -131,19 +102,12 @@ const Dashboard = () => {
           {summaryStats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div
-                key={stat.label}
-                className="liquid-glass rounded-2xl p-4 sm:p-5 flex flex-col gap-2 sm:gap-3"
-              >
+              <div key={stat.label} className="liquid-glass rounded-2xl p-4 sm:p-5 flex flex-col gap-2 sm:gap-3">
                 <div className="flex items-center justify-between">
                   <Icon className="w-4 h-4 text-muted-foreground" />
-                  {stat.trend === "up" && (
-                    <span className="text-[10px] text-success font-mono">▲</span>
-                  )}
+                  {stat.trend === "up" && <span className="text-[10px] text-success font-mono">▲</span>}
                 </div>
-                <p className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">
-                  {stat.value}
-                </p>
+                <p className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">{stat.value}</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">{stat.change}</p>
               </div>
             );
@@ -151,9 +115,8 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* ── Agent table (2/3 width) ──────────────────────────────────── */}
+          {/* Agent table */}
           <div className="lg:col-span-2 liquid-glass rounded-2xl overflow-hidden">
-            {/* Table header bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-5 py-4 border-b border-border/30">
               <h2 className="text-sm font-semibold text-foreground">Agent Credit Lines</h2>
               <div className="flex items-center gap-2">
@@ -174,78 +137,39 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Table — scrollable on mobile */}
             <div className="overflow-x-auto">
               <table className="w-full text-xs min-w-[600px]">
                 <thead>
                   <tr className="border-b border-border/20">
-                    {["Agent", "Risk", "Credit", "Utilisation", "Repayment", "Status"].map(
-                      (h) => (
-                        <th
-                          key={h}
-                          className="text-left text-muted-foreground/60 font-medium px-4 sm:px-5 py-3 uppercase tracking-wider"
-                        >
-                          <span className="flex items-center gap-1 cursor-pointer hover:text-muted-foreground transition-colors">
-                            {h}
-                            <ChevronDown className="w-3 h-3" />
-                          </span>
-                        </th>
-                      )
-                    )}
+                    {["Agent", "Risk", "Credit", "Utilisation", "Repayment", "Status"].map((h) => (
+                      <th key={h} className="text-left text-muted-foreground/60 font-medium px-4 sm:px-5 py-3 uppercase tracking-wider">
+                        <span className="flex items-center gap-1 cursor-pointer hover:text-muted-foreground transition-colors">
+                          {h} <ChevronDown className="w-3 h-3" />
+                        </span>
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filteredAgents.map((agent) => (
-                    <tr
-                      key={agent.id}
-                      className="border-b border-border/10 hover:bg-secondary/20 transition-colors cursor-pointer group"
-                      onClick={() => navigate(`/dashboard/${agent.id}`)}
-                    >
+                    <tr key={agent.id} className="border-b border-border/10 hover:bg-secondary/20 transition-colors cursor-pointer" onClick={() => navigate(`/dashboard/${agent.id}`)}>
                       <td className="px-4 sm:px-5 py-4">
                         <div className="flex flex-col">
                           <span className="text-foreground font-medium">{agent.name}</span>
-                          <span className="text-muted-foreground/50 font-mono">
-                            {agent.id} · {agent.type}
-                          </span>
+                          <span className="text-muted-foreground/50 font-mono">{agent.id} · {agent.type}</span>
                         </div>
                       </td>
-                      <td className="px-4 sm:px-5 py-4">
-                        <span className={`font-mono font-bold ${tierColor(agent.riskTier)}`}>
-                          {agent.riskTier}
-                        </span>
-                      </td>
-                      <td className="px-4 sm:px-5 py-4">
-                        <span className="text-foreground">
-                          ${agent.drawn}
-                          <span className="text-muted-foreground/50">
-                            {" "}/ ${agent.creditLimit}
-                          </span>
-                        </span>
-                      </td>
+                      <td className="px-4 sm:px-5 py-4"><span className={`font-mono font-bold ${tierColor(agent.riskTier)}`}>{agent.riskTier}</span></td>
+                      <td className="px-4 sm:px-5 py-4"><span className="text-foreground">${agent.drawn}<span className="text-muted-foreground/50"> / ${agent.creditLimit}</span></span></td>
                       <td className="px-4 sm:px-5 py-4">
                         <div className="flex items-center gap-2">
                           <div className="w-16 h-1.5 rounded-full bg-secondary overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${
-                                utilPercent(agent.drawn, agent.creditLimit) > 90
-                                  ? "bg-destructive"
-                                  : utilPercent(agent.drawn, agent.creditLimit) > 70
-                                  ? "bg-warning"
-                                  : "bg-success"
-                              }`}
-                              style={{
-                                width: `${utilPercent(agent.drawn, agent.creditLimit)}%`,
-                              }}
-                            />
+                            <div className={`h-full rounded-full ${utilPercent(agent.drawn, agent.creditLimit) > 90 ? "bg-destructive" : utilPercent(agent.drawn, agent.creditLimit) > 70 ? "bg-warning" : "bg-success"}`} style={{ width: `${utilPercent(agent.drawn, agent.creditLimit)}%` }} />
                           </div>
-                          <span className="text-muted-foreground font-mono">
-                            {utilPercent(agent.drawn, agent.creditLimit)}%
-                          </span>
+                          <span className="text-muted-foreground font-mono">{utilPercent(agent.drawn, agent.creditLimit)}%</span>
                         </div>
                       </td>
-                      <td className="px-4 sm:px-5 py-4">
-                        <span className="text-foreground font-mono">{agent.repaymentRate}%</span>
-                      </td>
+                      <td className="px-4 sm:px-5 py-4"><span className="text-foreground font-mono">{agent.repaymentRate}%</span></td>
                       <td className="px-4 sm:px-5 py-4">
                         <span className="flex items-center gap-2">
                           <span className={`w-1.5 h-1.5 rounded-full ${statusDot(agent.status)}`} />
@@ -259,59 +183,38 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* ── Activity feed (1/3 width) ────────────────────────────────── */}
+          {/* Activity feed */}
           <div className="liquid-glass rounded-2xl overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
               <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Activity className="w-3.5 h-3.5 text-muted-foreground" />
-                Live Activity
+                <Activity className="w-3.5 h-3.5 text-muted-foreground" /> Live Activity
               </h2>
               <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
             </div>
-
             <div className="flex-1 divide-y divide-border/10">
               {recentDraws.map((event) => (
                 <div key={event.id} className="px-4 sm:px-5 py-4 flex items-start gap-3 hover:bg-secondary/10 transition-colors">
-                  <div
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                      event.type === "draw" ? "bg-warning/10" : "bg-success/10"
-                    }`}
-                  >
-                    {event.type === "draw" ? (
-                      <ArrowUpRight className="w-3.5 h-3.5 text-warning" />
-                    ) : (
-                      <ArrowDownLeft className="w-3.5 h-3.5 text-success" />
-                    )}
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${event.type === "draw" ? "bg-warning/10" : "bg-success/10"}`}>
+                    {event.type === "draw" ? <ArrowUpRight className="w-3.5 h-3.5 text-warning" /> : <ArrowDownLeft className="w-3.5 h-3.5 text-success" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-foreground">
                       <span className="font-medium">{event.agentName}</span>{" "}
-                      <span className="text-muted-foreground">
-                        {event.type === "draw" ? "drew" : "repaid"}
-                      </span>{" "}
-                      <span className="font-mono font-medium">
-                        ${event.amount} USDT
-                      </span>
+                      <span className="text-muted-foreground">{event.type === "draw" ? "drew" : "repaid"}</span>{" "}
+                      <span className="font-mono font-medium">${event.amount} USDT</span>
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] text-muted-foreground/50">
-                        {event.timestamp}
-                      </span>
+                      <span className="text-[10px] text-muted-foreground/50">{event.timestamp}</span>
                       <button className="text-[10px] text-primary/60 font-mono flex items-center gap-0.5 hover:text-primary transition-colors">
-                        {event.txHash}
-                        <ExternalLink className="w-2.5 h-2.5" />
+                        {event.txHash} <ExternalLink className="w-2.5 h-2.5" />
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Weekly digest preview */}
             <div className="px-4 sm:px-5 py-4 border-t border-border/30 bg-secondary/10">
-              <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
-                Weekly Digest
-              </p>
+              <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">Weekly Digest</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 Your 47 agents completed <span className="text-foreground font-medium">340 tasks</span>.
                 Credit utilisation: <span className="text-foreground font-medium">73%</span>.
@@ -322,7 +225,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
