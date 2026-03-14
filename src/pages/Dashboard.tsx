@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import DashboardNavbar from "@/components/DashboardNavbar";
 import RegisterAgentModal from "@/components/RegisterAgentModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,7 +105,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <DashboardNavbar />
       <RegisterAgentModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">

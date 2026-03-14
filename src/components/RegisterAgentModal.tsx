@@ -67,14 +67,14 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-md liquid-glass rounded-2xl border border-border/30 overflow-hidden"
+            className="relative w-full max-w-md liquid-glass rounded-2xl border border-border/30 overflow-hidden max-h-[90vh] overflow-y-auto"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border/30">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-border/30">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-primary" />
@@ -90,7 +90,7 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
             </div>
 
             {/* Form */}
-            <div className="px-6 py-6 space-y-5">
+            <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-5">
               {/* Agent Name */}
               <div className="space-y-2">
                 <label className="text-xs text-muted-foreground font-medium flex items-center gap-2">
@@ -181,11 +181,11 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-5 border-t border-border/30 flex items-center justify-between">
-              <p className="text-[10px] text-muted-foreground/50 max-w-[200px]">
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-t border-border/30 flex flex-col sm:flex-row items-center gap-3 sm:justify-between">
+              <p className="text-[10px] text-muted-foreground/50 text-center sm:text-left sm:max-w-[200px]">
                 Credit Scoring Agent will evaluate within ~30 seconds via on-chain data.
               </p>
-              <Button variant="heroSecondary" className="px-6 py-5" onClick={handleSubmit}>
+              <Button variant="heroSecondary" className="px-6 py-5 w-full sm:w-auto" onClick={handleSubmit}>
                 Submit for Scoring
               </Button>
             </div>

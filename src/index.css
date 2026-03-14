@@ -8,7 +8,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  .dark {
     --background: 260 87% 3%;
     --foreground: 40 6% 95%;
     --card: 240 6% 9%;
@@ -47,6 +48,46 @@
     --sidebar-border: 240 4% 20%;
     --sidebar-ring: 262 83% 58%;
   }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 240 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 93%;
+    --secondary-foreground: 240 10% 10%;
+    --muted: 240 5% 93%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 88%;
+    --input: 240 6% 88%;
+    --ring: 262 83% 58%;
+    --radius: 0.75rem;
+    --hero-heading: 240 10% 10%;
+    --hero-sub: 240 4% 36%;
+    --success: 152 60% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 44%;
+    --warning-foreground: 0 0% 100%;
+    --info: 210 100% 48%;
+    --info-foreground: 0 0% 100%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 10%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 93%;
+    --sidebar-accent-foreground: 240 10% 10%;
+    --sidebar-border: 240 6% 88%;
+    --sidebar-ring: 262 83% 58%;
+  }
 }
 
 @layer base {
@@ -71,6 +112,11 @@
     overflow: hidden;
   }
 
+  .light .liquid-glass {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  }
+
   .liquid-glass::before {
     content: '';
     position: absolute;
@@ -85,5 +131,12 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+  }
+
+  .light .liquid-glass::before {
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.03) 20%,
+      rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%,
+      rgba(0,0,0,0.03) 80%, rgba(0,0,0,0.06) 100%);
   }
 }
