@@ -146,10 +146,10 @@ const AgentDetail = () => {
           Back to Dashboard
         </button>
 
-        <div className="flex items-start justify-between mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8 sm:mb-10">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-semibold text-foreground tracking-tight">
+            <div className="flex flex-wrap items-center gap-3 mb-2">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
                 {agent.name}
               </h1>
               <span className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${tierBg(agent.riskTier)} ${tierColor(agent.riskTier)}`}>
@@ -160,7 +160,7 @@ const AgentDetail = () => {
                 <span className="capitalize">{agent.status}</span>
               </span>
             </div>
-            <p className="text-muted-foreground text-sm font-mono">
+            <p className="text-muted-foreground text-xs sm:text-sm font-mono break-all">
               {agent.id} · {agent.type} · {agent.walletAddress}
             </p>
           </div>
