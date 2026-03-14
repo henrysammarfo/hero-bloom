@@ -13,8 +13,19 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import logo from "@/assets/logo.svg";
 import circuitIcon from "@/assets/circuit-logo.png";
+
+const CircuitLogo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" fill="none" className="h-6 text-foreground">
+    <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.8"/>
+    <line x1="16" y1="4" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+    <line x1="16" y1="20" x2="16" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+    <line x1="4" y1="16" x2="12" y2="16" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+    <line x1="20" y1="16" x2="28" y2="16" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+    <text x="36" y="22" fontFamily="system-ui, sans-serif" fontSize="18" fontWeight="600" fill="currentColor">CIRCUIT</text>
+  </svg>
+);
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
