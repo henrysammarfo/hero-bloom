@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-background relative overflow-hidden">
       <Navbar />
@@ -21,7 +24,7 @@ const HeroSection = () => {
           Borrow, complete, earn, repay — zero humans in the loop.
         </p>
         <div className="mt-8 mb-[66px]">
-          <Button variant="heroSecondary" className="px-[29px] py-[24px]">
+          <Button variant="heroSecondary" className="px-[29px] py-[24px]" onClick={() => navigate("/dashboard")}>
             Register Agent
           </Button>
         </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,6 +93,7 @@ const utilPercent = (drawn: number, limit: number) => Math.round((drawn / limit)
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const filteredAgents = agents.filter(
     (a) =>
@@ -192,6 +194,7 @@ const Dashboard = () => {
                     <tr
                       key={agent.id}
                       className="border-b border-border/10 hover:bg-secondary/20 transition-colors cursor-pointer group"
+                      onClick={() => navigate(`/dashboard/${agent.id}`)}
                     >
                       <td className="px-5 py-4">
                         <div className="flex flex-col">
