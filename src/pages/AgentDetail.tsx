@@ -118,7 +118,7 @@ const AgentDetail = () => {
   if (!agent) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
+        <DashboardNavbar />
         <div className="max-w-7xl mx-auto px-6 py-20 text-center">
           <p className="text-muted-foreground text-lg">Agent not found.</p>
           <Button variant="heroSecondary" className="mt-6" onClick={() => navigate("/dashboard")}>
