@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -23,6 +24,10 @@ const pageVariants = {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const isDashboardRoute = ["/dashboard", "/agents", "/sessions", "/settings"].some(
+    (p) => location.pathname === p || location.pathname.startsWith(p + "/")
+  ) || location.pathname.startsWith("/dashboard/");
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -33,15 +38,20 @@ const AnimatedRoutes = () => {
         exit="exit"
         transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <Routes location={location}>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/:agentId" element={<AgentDetail />} />
-          <Route path="/agents" element={<Agents />} />
-          <Route path="/sessions" element={<Sessions />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        {isDashboardRoute ? (
+          <Routes location={location}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/:agentId" element={<AgentDetail />} />
+            <Route path="/agents" element={<Agents />} />
+            <Route path="/sessions" element={<Sessions />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        ) : (
+          <Routes location={location}>
+            <Route path="/" element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        )}
       </motion.div>
     </AnimatePresence>
   );
@@ -54,7 +64,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AnimatedRoutes />
+          <SidebarProvider>
+            <AnimatedRoutes />
+          </SidebarProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
