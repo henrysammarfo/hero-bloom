@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import RegisterAgentModal from "@/components/RegisterAgentModal";
 import { Button } from "@/components/ui/button";
 import {
   ArrowUpRight,
@@ -17,7 +18,7 @@ import {
   Activity,
 } from "lucide-react";
 
-// ─── Mock data matching the CIRCUIT Bible demo ──────────────────────────────
+// ─── Mock data ──────────────────────────────────────────────────────────────
 
 const summaryStats = [
   { label: "Active Credit Lines", value: "47", change: "+3 this week", icon: Users, trend: "up" as const },
@@ -93,6 +94,7 @@ const utilPercent = (drawn: number, limit: number) => Math.round((drawn / limit)
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [registerOpen, setRegisterOpen] = useState(false);
   const navigate = useNavigate();
 
   const filteredAgents = agents.filter(
@@ -104,32 +106,33 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <RegisterAgentModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
 
-      <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-10">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
               Operator Dashboard
             </h1>
             <p className="text-muted-foreground text-sm mt-1">
               Wei's fleet · 47 active agents · Sepolia testnet
             </p>
           </div>
-          <Button variant="heroSecondary" className="gap-2 px-5 py-5">
+          <Button variant="heroSecondary" className="gap-2 px-5 py-5 w-full sm:w-auto" onClick={() => setRegisterOpen(true)}>
             <Plus className="w-4 h-4" />
             Register Agent
           </Button>
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-10">
           {summaryStats.map((stat) => {
             const Icon = stat.icon;
             return (
               <div
                 key={stat.label}
-                className="liquid-glass rounded-2xl p-5 flex flex-col gap-3"
+                className="liquid-glass rounded-2xl p-4 sm:p-5 flex flex-col gap-2 sm:gap-3"
               >
                 <div className="flex items-center justify-between">
                   <Icon className="w-4 h-4 text-muted-foreground" />
@@ -137,10 +140,10 @@ const Dashboard = () => {
                     <span className="text-[10px] text-success font-mono">▲</span>
                   )}
                 </div>
-                <p className="text-2xl font-semibold text-foreground tracking-tight">
+                <p className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">
                   {stat.value}
                 </p>
-                <p className="text-xs text-muted-foreground">{stat.change}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{stat.change}</p>
               </div>
             );
           })}
@@ -150,35 +153,36 @@ const Dashboard = () => {
           {/* ── Agent table (2/3 width) ──────────────────────────────────── */}
           <div className="lg:col-span-2 liquid-glass rounded-2xl overflow-hidden">
             {/* Table header bar */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-border/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-5 py-4 border-b border-border/30">
               <h2 className="text-sm font-semibold text-foreground">Agent Credit Lines</h2>
               <div className="flex items-center gap-2">
-                <div className="relative">
+                <div className="relative flex-1 sm:flex-none">
                   <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="Search agents…"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-secondary/50 border border-border/30 rounded-lg text-xs text-foreground pl-8 pr-3 py-2 w-44 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                    maxLength={100}
+                    className="bg-secondary/50 border border-border/30 rounded-lg text-xs text-foreground pl-8 pr-3 py-2 w-full sm:w-44 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
                   />
                 </div>
-                <button className="p-2 rounded-lg hover:bg-secondary/50 transition-colors">
+                <button className="p-2 rounded-lg hover:bg-secondary/50 transition-colors shrink-0">
                   <Filter className="w-3.5 h-3.5 text-muted-foreground" />
                 </button>
               </div>
             </div>
 
-            {/* Table */}
+            {/* Table — scrollable on mobile */}
             <div className="overflow-x-auto">
-              <table className="w-full text-xs">
+              <table className="w-full text-xs min-w-[600px]">
                 <thead>
                   <tr className="border-b border-border/20">
                     {["Agent", "Risk", "Credit", "Utilisation", "Repayment", "Status"].map(
                       (h) => (
                         <th
                           key={h}
-                          className="text-left text-muted-foreground/60 font-medium px-5 py-3 uppercase tracking-wider"
+                          className="text-left text-muted-foreground/60 font-medium px-4 sm:px-5 py-3 uppercase tracking-wider"
                         >
                           <span className="flex items-center gap-1 cursor-pointer hover:text-muted-foreground transition-colors">
                             {h}
@@ -196,7 +200,7 @@ const Dashboard = () => {
                       className="border-b border-border/10 hover:bg-secondary/20 transition-colors cursor-pointer group"
                       onClick={() => navigate(`/dashboard/${agent.id}`)}
                     >
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <div className="flex flex-col">
                           <span className="text-foreground font-medium">{agent.name}</span>
                           <span className="text-muted-foreground/50 font-mono">
@@ -204,12 +208,12 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <span className={`font-mono font-bold ${tierColor(agent.riskTier)}`}>
                           {agent.riskTier}
                         </span>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <span className="text-foreground">
                           ${agent.drawn}
                           <span className="text-muted-foreground/50">
@@ -217,7 +221,7 @@ const Dashboard = () => {
                           </span>
                         </span>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <div className="flex items-center gap-2">
                           <div className="w-16 h-1.5 rounded-full bg-secondary overflow-hidden">
                             <div
@@ -238,10 +242,10 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <span className="text-foreground font-mono">{agent.repaymentRate}%</span>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 sm:px-5 py-4">
                         <span className="flex items-center gap-2">
                           <span className={`w-1.5 h-1.5 rounded-full ${statusDot(agent.status)}`} />
                           <span className="text-muted-foreground capitalize">{agent.status}</span>
@@ -266,7 +270,7 @@ const Dashboard = () => {
 
             <div className="flex-1 divide-y divide-border/10">
               {recentDraws.map((event) => (
-                <div key={event.id} className="px-5 py-4 flex items-start gap-3 hover:bg-secondary/10 transition-colors">
+                <div key={event.id} className="px-4 sm:px-5 py-4 flex items-start gap-3 hover:bg-secondary/10 transition-colors">
                   <div
                     className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
                       event.type === "draw" ? "bg-warning/10" : "bg-success/10"
@@ -303,7 +307,7 @@ const Dashboard = () => {
             </div>
 
             {/* Weekly digest preview */}
-            <div className="px-5 py-4 border-t border-border/30 bg-secondary/10">
+            <div className="px-4 sm:px-5 py-4 border-t border-border/30 bg-secondary/10">
               <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
                 Weekly Digest
               </p>
