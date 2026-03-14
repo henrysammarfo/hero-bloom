@@ -90,7 +90,7 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
             </div>
 
             {/* Form */}
-            <div className="px-6 py-6 space-y-5">
+            <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-5">
               {/* Agent Name */}
               <div className="space-y-2">
                 <label className="text-xs text-muted-foreground font-medium flex items-center gap-2">
