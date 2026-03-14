@@ -55,7 +55,7 @@ export function AppSidebar() {
             </button>
           ) : (
             <>
-              <img src={logo} alt="CIRCUIT" className="h-6" />
+              <CircuitLogo />
               {!isMobile && (
                 <button
                   onClick={toggleSidebar}
