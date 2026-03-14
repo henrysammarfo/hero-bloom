@@ -9,7 +9,7 @@ const navItems = [
   { label: "How It Works", scrollTo: "how-it-works" },
   { label: "Operators", href: "/dashboard" },
   { label: "LPs", scrollTo: "lending-pool" },
-  { label: "Docs", external: "https://docs.tether.io/wdk" },
+  { label: "Docs", href: "/docs" },
 ];
 
 const Navbar = () => {
