@@ -6,7 +6,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="bg-background relative overflow-hidden">
+    <section className="relative overflow-hidden" style={{ background: "hsl(0, 0%, 0%)" }}>
       <Navbar />
       <div className="flex flex-col items-center pt-10 sm:pt-20 px-4">
         <h1
@@ -18,7 +18,7 @@ const HeroSection = () => {
         >
           Circuit
         </h1>
-        <p className="text-hero-sub text-center text-base sm:text-lg leading-7 sm:leading-8 max-w-lg mt-4 opacity-80 px-2">
+        <p className="text-center text-base sm:text-lg leading-7 sm:leading-8 max-w-lg mt-4 opacity-80 px-2" style={{ color: "hsl(0, 0%, 72%)" }}>
           Autonomous credit infrastructure for AI agents.
           <br />
           Borrow, complete, earn, repay — zero humans in the loop.

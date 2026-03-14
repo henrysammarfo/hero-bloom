@@ -15,6 +15,7 @@ import Agents from "./pages/Agents.tsx";
 import Sessions from "./pages/Sessions.tsx";
 import SettingsPage from "./pages/SettingsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import DocsPage from "./pages/DocsPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/docs" element={<DocsPage />} />
             <Route element={<DashboardShell />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/:agentId" element={<AgentDetail />} />

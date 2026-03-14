@@ -1,4 +1,4 @@
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.svg";
 
 const navItems = [
-  { label: "How It Works", hasDropdown: false, scrollTo: "how-it-works" },
-  { label: "Operators", hasDropdown: false, href: "/dashboard" },
-  { label: "LPs", hasDropdown: true, scrollTo: "lending-pool" },
-  { label: "Docs", hasDropdown: false, external: "https://docs.tether.io/wdk" },
+  { label: "How It Works", scrollTo: "how-it-works" },
+  { label: "Operators", href: "/dashboard" },
+  { label: "LPs", scrollTo: "lending-pool" },
+  { label: "Docs", href: "/docs" },
 ];
 
 const Navbar = () => {
@@ -19,10 +19,6 @@ const Navbar = () => {
 
   const handleNavClick = (item: typeof navItems[number]) => {
     setMobileOpen(false);
-    if (item.external) {
-      window.open(item.external, "_blank");
-      return;
-    }
     if (item.href) {
       navigate(item.href);
       return;
@@ -55,10 +51,9 @@ const Navbar = () => {
             <button
               key={item.label}
               onClick={() => handleNavClick(item)}
-              className="flex items-center gap-1 text-foreground/90 text-base px-3 py-2 rounded-lg hover:bg-secondary/50 transition-colors"
+              className="flex items-center gap-1 text-[hsl(0,0%,95%)]/90 text-base px-3 py-2 rounded-lg hover:bg-[hsl(0,0%,8%)]/50 transition-colors"
             >
               {item.label}
-              {item.hasDropdown && <ChevronDown className="w-4 h-4" />}
             </button>
           ))}
         </div>
@@ -75,10 +70,10 @@ const Navbar = () => {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-[hsl(0,0%,8%)]/50 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
+            {mobileOpen ? <X className="w-5 h-5 text-[hsl(0,0%,95%)]" /> : <Menu className="w-5 h-5 text-[hsl(0,0%,95%)]" />}
           </button>
         </div>
       </nav>
@@ -91,17 +86,16 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden border-b border-border/20"
+            className="md:hidden overflow-hidden border-b border-[hsl(0,0%,12%)]/20"
           >
             <div className="px-4 pb-4 space-y-1">
               {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item)}
-                  className="w-full flex items-center gap-2 text-foreground/90 text-base px-3 py-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                  className="w-full flex items-center gap-2 text-[hsl(0,0%,95%)]/90 text-base px-3 py-3 rounded-lg hover:bg-[hsl(0,0%,8%)]/50 transition-colors"
                 >
                   {item.label}
-                  {item.hasDropdown && <ChevronDown className="w-4 h-4" />}
                 </button>
               ))}
               <Button
@@ -116,7 +110,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      <div className="mt-[3px] w-full h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+      <div className="mt-[3px] w-full h-px bg-gradient-to-r from-transparent via-[hsl(0,0%,95%)]/20 to-transparent" />
     </>
   );
 };
