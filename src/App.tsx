@@ -15,6 +15,7 @@ import Agents from "./pages/Agents.tsx";
 import Sessions from "./pages/Sessions.tsx";
 import SettingsPage from "./pages/SettingsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import DocsPage from "./pages/DocsPage.tsx";
 
 const queryClient = new QueryClient();
 
