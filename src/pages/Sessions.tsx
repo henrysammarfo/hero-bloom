@@ -1,5 +1,6 @@
+import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { ArrowUpRight, ArrowDownLeft, ExternalLink, Clock } from "lucide-react";
+import { ArrowUpRight, ArrowDownLeft, ExternalLink, Clock, Filter } from "lucide-react";
 
 interface SessionEvent {
   id: string;
@@ -25,18 +26,61 @@ const sessionEvents: SessionEvent[] = [
   { id: "TX-10", agentId: "AGT-002", agentName: "DataProc Unit 7", type: "draw", amount: 200, timestamp: "2:15 PM", txHash: "0x7f3e…d22a", date: "Mar 12" },
 ];
 
+type FilterType = "all" | "draw" | "repay";
+
 const Sessions = () => {
-  const grouped = sessionEvents.reduce<Record<string, SessionEvent[]>>((acc, e) => {
+  const [filter, setFilter] = useState<FilterType>("all");
+
+  const filtered = filter === "all" ? sessionEvents : sessionEvents.filter(e => e.type === filter);
+
+  const grouped = filtered.reduce<Record<string, SessionEvent[]>>((acc, e) => {
     (acc[e.date] ??= []).push(e);
     return acc;
   }, {});
 
+  const totalDrawn = sessionEvents.filter(e => e.type === "draw").reduce((s, e) => s + e.amount, 0);
+  const totalRepaid = sessionEvents.filter(e => e.type === "repay").reduce((s, e) => s + e.amount, 0);
+
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">Sessions & History</h1>
           <p className="text-muted-foreground text-sm mt-1">All agent draws and repayments</p>
+        </div>
+
+        {/* Summary strip */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="liquid-glass rounded-xl p-3 sm:p-4 text-center">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 uppercase tracking-wider">Total Drawn</p>
+            <p className="text-base sm:text-lg font-semibold text-warning font-mono mt-1">${totalDrawn}</p>
+          </div>
+          <div className="liquid-glass rounded-xl p-3 sm:p-4 text-center">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 uppercase tracking-wider">Total Repaid</p>
+            <p className="text-base sm:text-lg font-semibold text-success font-mono mt-1">${totalRepaid}</p>
+          </div>
+          <div className="liquid-glass rounded-xl p-3 sm:p-4 text-center">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 uppercase tracking-wider">Transactions</p>
+            <p className="text-base sm:text-lg font-semibold text-foreground font-mono mt-1">{sessionEvents.length}</p>
+          </div>
+        </div>
+
+        {/* Filter chips */}
+        <div className="flex items-center gap-2 mb-6">
+          <Filter className="w-3.5 h-3.5 text-muted-foreground/50" />
+          {(["all", "draw", "repay"] as const).map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                filter === f
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "bg-secondary/30 text-muted-foreground border border-border/10 hover:bg-secondary/50"
+              }`}
+            >
+              {f === "all" ? "All" : f === "draw" ? "Draws" : "Repayments"}
+            </button>
+          ))}
         </div>
 
         <div className="space-y-6">
@@ -48,7 +92,7 @@ const Sessions = () => {
               </div>
               <div className="liquid-glass rounded-2xl overflow-hidden divide-y divide-border/10">
                 {events.map((event) => (
-                  <div key={event.id} className="px-4 sm:px-5 py-4 flex items-center gap-3 hover:bg-secondary/10 transition-colors">
+                  <div key={event.id} className="px-3 sm:px-5 py-3 sm:py-4 flex items-center gap-3 hover:bg-secondary/10 transition-colors">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${event.type === "draw" ? "bg-warning/10" : "bg-success/10"}`}>
                       {event.type === "draw" ? (
                         <ArrowUpRight className="w-4 h-4 text-warning" />
@@ -57,17 +101,18 @@ const Sessions = () => {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-foreground">
+                      <p className="text-xs sm:text-sm text-foreground">
                         <span className="font-medium">{event.agentName}</span>{" "}
                         <span className="text-muted-foreground">{event.type === "draw" ? "drew" : "repaid"}</span>{" "}
                         <span className="font-mono font-medium">${event.amount} USDT</span>
                       </p>
-                      <p className="text-xs text-muted-foreground/50 font-mono mt-0.5">{event.agentId}</p>
+                      <p className="text-[10px] text-muted-foreground/50 font-mono mt-0.5">{event.agentId}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-xs text-muted-foreground">{event.timestamp}</p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">{event.timestamp}</p>
                       <button className="text-[10px] text-primary/60 font-mono flex items-center gap-0.5 hover:text-primary transition-colors mt-0.5 ml-auto">
-                        {event.txHash}
+                        <span className="hidden sm:inline">{event.txHash}</span>
+                        <span className="sm:hidden">{event.txHash.slice(0, 8)}…</span>
                         <ExternalLink className="w-2.5 h-2.5" />
                       </button>
                     </div>
@@ -76,6 +121,13 @@ const Sessions = () => {
               </div>
             </div>
           ))}
+
+          {Object.keys(grouped).length === 0 && (
+            <div className="liquid-glass rounded-2xl p-10 text-center">
+              <Clock className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">No {filter === "all" ? "" : filter} transactions found</p>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>
