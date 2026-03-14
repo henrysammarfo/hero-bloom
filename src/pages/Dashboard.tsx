@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "@/components/DashboardLayout";
 import RegisterAgentModal from "@/components/RegisterAgentModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -82,7 +81,7 @@ const Dashboard = () => {
   );
 
   return (
-    <DashboardLayout>
+    <>
       <RegisterAgentModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
@@ -225,7 +224,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 
