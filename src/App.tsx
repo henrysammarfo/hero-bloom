@@ -62,7 +62,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/docs" element={<DocsPage />} />
             <Route element={<DashboardShell />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/:agentId" element={<AgentDetail />} />
