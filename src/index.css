@@ -39,13 +39,13 @@
     --info: 210 100% 56%;
     --info-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 2%;
+    --sidebar-background: 0 0% 0%;
     --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 262 83% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 6%;
+    --sidebar-accent: 0 0% 4%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 6%;
+    --sidebar-border: 0 0% 0%;
     --sidebar-ring: 262 83% 58%;
   }
 
