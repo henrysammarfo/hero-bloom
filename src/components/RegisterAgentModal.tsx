@@ -74,7 +74,7 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border/30">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-border/30">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-primary" />
