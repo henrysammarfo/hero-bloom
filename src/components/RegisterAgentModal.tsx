@@ -181,11 +181,11 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-5 border-t border-border/30 flex items-center justify-between">
-              <p className="text-[10px] text-muted-foreground/50 max-w-[200px]">
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-t border-border/30 flex flex-col sm:flex-row items-center gap-3 sm:justify-between">
+              <p className="text-[10px] text-muted-foreground/50 text-center sm:text-left sm:max-w-[200px]">
                 Credit Scoring Agent will evaluate within ~30 seconds via on-chain data.
               </p>
-              <Button variant="heroSecondary" className="px-6 py-5" onClick={handleSubmit}>
+              <Button variant="heroSecondary" className="px-6 py-5 w-full sm:w-auto" onClick={handleSubmit}>
                 Submit for Scoring
               </Button>
             </div>
