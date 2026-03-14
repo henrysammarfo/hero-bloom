@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { forwardRef, ReactNode } from "react";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import DashboardNavbar from "@/components/DashboardNavbar";
 
@@ -7,10 +7,10 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const DashboardLayout = forwardRef<HTMLDivElement, DashboardLayoutProps>(({ children }, ref) => {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div ref={ref} className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           <DashboardNavbar />
@@ -21,6 +21,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       </div>
     </SidebarProvider>
   );
-};
+});
+
+DashboardLayout.displayName = "DashboardLayout";
 
 export default DashboardLayout;
