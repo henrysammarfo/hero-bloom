@@ -275,7 +275,7 @@ const AgentDetail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
