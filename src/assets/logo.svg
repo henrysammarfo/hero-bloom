@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" fill="none">
-  <circle cx="16" cy="16" r="12" stroke="white" stroke-width="2" fill="none"/>
-  <circle cx="16" cy="16" r="4" fill="white" opacity="0.8"/>
-  <line x1="16" y1="4" x2="16" y2="12" stroke="white" stroke-width="1.5" opacity="0.5"/>
-  <line x1="16" y1="20" x2="16" y2="28" stroke="white" stroke-width="1.5" opacity="0.5"/>
-  <line x1="4" y1="16" x2="12" y2="16" stroke="white" stroke-width="1.5" opacity="0.5"/>
-  <line x1="20" y1="16" x2="28" y2="16" stroke="white" stroke-width="1.5" opacity="0.5"/>
-  <text x="36" y="22" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="white">CIRCUIT</text>
+  <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2" fill="none"/>
+  <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.8"/>
+  <line x1="16" y1="4" x2="16" y2="12" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+  <line x1="16" y1="20" x2="16" y2="28" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+  <line x1="4" y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+  <line x1="20" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+  <text x="36" y="22" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="currentColor">CIRCUIT</text>
 </svg>
