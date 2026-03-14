@@ -18,15 +18,15 @@ const DashboardNavbar = () => {
 
   return (
     <>
-      <nav className="w-full py-3 px-4 sm:px-6 flex items-center justify-between">
-        <SidebarTrigger className="md:hidden" />
+      <nav className="w-full py-3 px-3 sm:px-6 flex items-center justify-between gap-2">
+        <SidebarTrigger className="md:hidden shrink-0" />
 
         <div className="flex-1" />
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl bg-secondary/50 border border-border/30 hover:bg-secondary transition-colors"
+            className="p-2 sm:p-2.5 rounded-xl bg-secondary/50 border border-border/20 hover:bg-secondary transition-colors"
             aria-label="Toggle theme"
           >
             {theme === "dark" ? (
@@ -36,8 +36,8 @@ const DashboardNavbar = () => {
             )}
           </button>
 
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary/50 border border-border/30">
-            <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+          <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 rounded-xl bg-secondary/50 border border-border/20">
+            <span className="w-2 h-2 rounded-full bg-success animate-pulse shrink-0" />
             <span className="text-xs font-mono text-foreground hidden sm:inline">{walletAddress}</span>
             <span className="text-xs font-mono text-foreground sm:hidden">0x7a…1c</span>
             <button onClick={handleCopy} className="p-1 rounded-md hover:bg-secondary transition-colors">
@@ -46,14 +46,14 @@ const DashboardNavbar = () => {
           </div>
 
           <button
-            className="p-2.5 rounded-xl bg-secondary/50 border border-border/30 hover:bg-destructive/10 hover:border-destructive/30 transition-colors"
+            className="p-2 sm:p-2.5 rounded-xl bg-secondary/50 border border-border/20 hover:bg-destructive/10 hover:border-destructive/30 transition-colors"
             aria-label="Disconnect wallet"
           >
             <LogOut className="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
       </nav>
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-foreground/5 to-transparent" />
     </>
   );
 };
