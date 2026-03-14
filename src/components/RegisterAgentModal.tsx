@@ -67,7 +67,7 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-md liquid-glass rounded-2xl border border-border/30 overflow-hidden"
+            className="relative w-full max-w-md liquid-glass rounded-2xl border border-border/30 overflow-hidden max-h-[90vh] overflow-y-auto"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
