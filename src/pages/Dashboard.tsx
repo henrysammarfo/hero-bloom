@@ -93,6 +93,7 @@ const utilPercent = (drawn: number, limit: number) => Math.round((drawn / limit)
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const filteredAgents = agents.filter(
     (a) =>
