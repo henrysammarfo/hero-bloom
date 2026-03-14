@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "@/components/DashboardLayout";
 import RegisterAgentModal from "@/components/RegisterAgentModal";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, Bot } from "lucide-react";
@@ -41,7 +40,7 @@ const Agents = () => {
   );
 
   return (
-    <DashboardLayout>
+    <>
       <RegisterAgentModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -101,7 +100,7 @@ const Agents = () => {
           ))}
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

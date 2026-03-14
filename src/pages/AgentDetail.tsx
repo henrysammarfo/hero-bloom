@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
@@ -117,14 +116,12 @@ const AgentDetail = () => {
 
   if (!agent) {
     return (
-      <DashboardLayout>
-        <div className="max-w-7xl mx-auto px-6 py-20 text-center">
-          <p className="text-muted-foreground text-lg">Agent not found.</p>
-          <Button variant="heroSecondary" className="mt-6" onClick={() => navigate("/dashboard")}>
-            Back to Dashboard
-          </Button>
-        </div>
-      </DashboardLayout>
+      <div className="max-w-7xl mx-auto px-6 py-20 text-center">
+        <p className="text-muted-foreground text-lg">Agent not found.</p>
+        <Button variant="heroSecondary" className="mt-6" onClick={() => navigate("/dashboard")}>
+          Back to Dashboard
+        </Button>
+      </div>
     );
   }
 
@@ -133,149 +130,147 @@ const AgentDetail = () => {
   );
 
   return (
-    <DashboardLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        {/* Back + header */}
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      {/* Back + header */}
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back to Dashboard
+      </button>
+
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8 sm:mb-10">
+        <div>
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
+              {agent.name}
+            </h1>
+            <span className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${tierBg(agent.riskTier)} ${tierColor(agent.riskTier)}`}>
+              Tier {agent.riskTier}
+            </span>
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className={`w-1.5 h-1.5 rounded-full ${statusDot(agent.status)}`} />
+              <span className="capitalize">{agent.status}</span>
+            </span>
+          </div>
+          <p className="text-muted-foreground text-xs sm:text-sm font-mono break-all">
+            {agent.id} · {agent.type} · {agent.walletAddress}
+          </p>
+        </div>
+        <a
+          href={`https://sepolia.etherscan.io/address/${agent.walletAddress}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="liquid-glass rounded-xl px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Dashboard
-        </button>
+          Etherscan
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8 sm:mb-10">
-          <div>
-            <div className="flex flex-wrap items-center gap-3 mb-2">
-              <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
-                {agent.name}
-              </h1>
-              <span className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${tierBg(agent.riskTier)} ${tierColor(agent.riskTier)}`}>
-                Tier {agent.riskTier}
-              </span>
-              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className={`w-1.5 h-1.5 rounded-full ${statusDot(agent.status)}`} />
-                <span className="capitalize">{agent.status}</span>
-              </span>
-            </div>
-            <p className="text-muted-foreground text-xs sm:text-sm font-mono break-all">
-              {agent.id} · {agent.type} · {agent.walletAddress}
-            </p>
+      {/* Quick stats row */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8 sm:mb-10">
+        {[
+          { label: "Credit Limit", value: `$${agent.creditLimit}` },
+          { label: "Currently Drawn", value: `$${agent.drawn}` },
+          { label: "Tasks Completed", value: agent.totalTasksCompleted.toString() },
+          { label: "Total Revenue", value: `$${agent.totalRevenue.toLocaleString()}` },
+          { label: "Registered", value: agent.registeredDate },
+        ].map((s) => (
+          <div key={s.label} className="liquid-glass rounded-2xl p-5 flex flex-col gap-2">
+            <p className="text-xs text-muted-foreground">{s.label}</p>
+            <p className="text-xl font-semibold text-foreground tracking-tight">{s.value}</p>
           </div>
-          <a
-            href={`https://sepolia.etherscan.io/address/${agent.walletAddress}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="liquid-glass rounded-xl px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-          >
-            Etherscan
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
+        ))}
+      </div>
 
-        {/* Quick stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8 sm:mb-10">
-          {[
-            { label: "Credit Limit", value: `$${agent.creditLimit}` },
-            { label: "Currently Drawn", value: `$${agent.drawn}` },
-            { label: "Tasks Completed", value: agent.totalTasksCompleted.toString() },
-            { label: "Total Revenue", value: `$${agent.totalRevenue.toLocaleString()}` },
-            { label: "Registered", value: agent.registeredDate },
-          ].map((s) => (
-            <div key={s.label} className="liquid-glass rounded-2xl p-5 flex flex-col gap-2">
-              <p className="text-xs text-muted-foreground">{s.label}</p>
-              <p className="text-xl font-semibold text-foreground tracking-tight">{s.value}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* ── Credit Score Breakdown (2/3) ────────────────────────────── */}
-          <div className="lg:col-span-2 liquid-glass rounded-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border/30">
-              <h2 className="text-sm font-semibold text-foreground">Credit Score Breakdown</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-semibold text-foreground">{overallScore}</span>
-                <span className="text-xs text-muted-foreground">/100</span>
-              </div>
-            </div>
-            <div className="p-6 space-y-6">
-              {scoreDimensions.map((dim) => {
-                const Icon = dim.icon;
-                const value = agent.creditScore[dim.key];
-                return (
-                  <div key={dim.key} className="flex items-center gap-4">
-                    <div className="w-9 h-9 rounded-lg bg-secondary/50 flex items-center justify-center shrink-0">
-                      <Icon className="w-4 h-4 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-sm text-foreground font-medium">{dim.label}</span>
-                        <span className="text-sm font-mono text-foreground">{value}</span>
-                      </div>
-                      <div className="w-full h-2 rounded-full bg-secondary overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-700 ${scoreBarColor(value)}`}
-                          style={{ width: `${value}%` }}
-                        />
-                      </div>
-                      <p className="text-[10px] text-muted-foreground/50 mt-1">{dim.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ── Credit Score Breakdown (2/3) ────────────────────────────── */}
+        <div className="lg:col-span-2 liquid-glass rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-border/30">
+            <h2 className="text-sm font-semibold text-foreground">Credit Score Breakdown</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-semibold text-foreground">{overallScore}</span>
+              <span className="text-xs text-muted-foreground">/100</span>
             </div>
           </div>
-
-          {/* ── Draw / Repay History (1/3) ──────────────────────────────── */}
-          <div className="liquid-glass rounded-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-5 py-5 border-b border-border/30">
-              <h2 className="text-sm font-semibold text-foreground">Draw / Repay History</h2>
-              <span className="text-xs text-muted-foreground font-mono">{history.length} events</span>
-            </div>
-            <div className="flex-1 divide-y divide-border/10 overflow-y-auto max-h-[480px]">
-              {history.map((event) => (
-                <div key={event.id} className="px-5 py-4 flex items-start gap-3 hover:bg-secondary/10 transition-colors">
-                  <div
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                      event.type === "draw" ? "bg-warning/10" : "bg-success/10"
-                    }`}
-                  >
-                    {event.type === "draw" ? (
-                      <ArrowUpRight className="w-3.5 h-3.5 text-warning" />
-                    ) : (
-                      <ArrowDownLeft className="w-3.5 h-3.5 text-success" />
-                    )}
+          <div className="p-6 space-y-6">
+            {scoreDimensions.map((dim) => {
+              const Icon = dim.icon;
+              const value = agent.creditScore[dim.key];
+              return (
+                <div key={dim.key} className="flex items-center gap-4">
+                  <div className="w-9 h-9 rounded-lg bg-secondary/50 flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-foreground">
-                      <span className="text-muted-foreground capitalize">{event.type}</span>{" "}
-                      <span className="font-mono font-medium">${event.amount} USDT</span>
-                    </p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <span className="text-[10px] text-muted-foreground/50">{event.timestamp}</span>
-                      <span className="text-[10px] text-muted-foreground/40">·</span>
-                      <a
-                        href={`https://sepolia.etherscan.io/tx/${event.txHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] text-primary/60 font-mono flex items-center gap-0.5 hover:text-primary transition-colors"
-                      >
-                        {event.txHash.slice(0, 12)}…
-                        <ExternalLink className="w-2.5 h-2.5" />
-                      </a>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-sm text-foreground font-medium">{dim.label}</span>
+                      <span className="text-sm font-mono text-foreground">{value}</span>
                     </div>
-                    <p className="text-[10px] text-muted-foreground/30 font-mono mt-0.5">
-                      Block #{event.blockNumber}
-                    </p>
+                    <div className="w-full h-2 rounded-full bg-secondary overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ${scoreBarColor(value)}`}
+                        style={{ width: `${value}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-muted-foreground/50 mt-1">{dim.desc}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Draw / Repay History (1/3) ──────────────────────────────── */}
+        <div className="liquid-glass rounded-2xl overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between px-5 py-5 border-b border-border/30">
+            <h2 className="text-sm font-semibold text-foreground">Draw / Repay History</h2>
+            <span className="text-xs text-muted-foreground font-mono">{history.length} events</span>
+          </div>
+          <div className="flex-1 divide-y divide-border/10 overflow-y-auto max-h-[480px]">
+            {history.map((event) => (
+              <div key={event.id} className="px-5 py-4 flex items-start gap-3 hover:bg-secondary/10 transition-colors">
+                <div
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                    event.type === "draw" ? "bg-warning/10" : "bg-success/10"
+                  }`}
+                >
+                  {event.type === "draw" ? (
+                    <ArrowUpRight className="w-3.5 h-3.5 text-warning" />
+                  ) : (
+                    <ArrowDownLeft className="w-3.5 h-3.5 text-success" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-foreground">
+                    <span className="text-muted-foreground capitalize">{event.type}</span>{" "}
+                    <span className="font-mono font-medium">${event.amount} USDT</span>
+                  </p>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-[10px] text-muted-foreground/50">{event.timestamp}</span>
+                    <span className="text-[10px] text-muted-foreground/40">·</span>
+                    <a
+                      href={`https://sepolia.etherscan.io/tx/${event.txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-primary/60 font-mono flex items-center gap-0.5 hover:text-primary transition-colors"
+                    >
+                      {event.txHash.slice(0, 12)}…
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/30 font-mono mt-0.5">
+                    Block #{event.blockNumber}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 

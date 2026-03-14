@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Sun, Moon, Copy, Check, LogOut } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useTheme } from "@/hooks/use-theme";
+import { useToast } from "@/hooks/use-toast";
 
 const DashboardNavbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const walletAddress = "0x7a3f…e21c";
   const fullAddress = "0x7a3f8b2ce21c4B8d9F1d5B3e2A7c3A9f";
@@ -14,6 +18,14 @@ const DashboardNavbar = () => {
     navigator.clipboard.writeText(fullAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleLogout = () => {
+    toast({
+      title: "Wallet Disconnected",
+      description: "You have been logged out successfully.",
+    });
+    navigate("/");
   };
 
   return (
@@ -46,6 +58,7 @@ const DashboardNavbar = () => {
           </div>
 
           <button
+            onClick={handleLogout}
             className="p-2 sm:p-2.5 rounded-xl bg-secondary/50 border border-border/20 hover:bg-destructive/10 hover:border-destructive/30 transition-colors"
             aria-label="Disconnect wallet"
           >
