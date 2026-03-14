@@ -194,6 +194,7 @@ const Dashboard = () => {
                     <tr
                       key={agent.id}
                       className="border-b border-border/10 hover:bg-secondary/20 transition-colors cursor-pointer group"
+                      onClick={() => navigate(`/dashboard/${agent.id}`)}
                     >
                       <td className="px-5 py-4">
                         <div className="flex flex-col">
