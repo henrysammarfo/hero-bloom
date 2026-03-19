@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Bot, Wallet, CreditCard, ChevronDown } from "lucide-react";
+import { parseUnits } from "viem";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { hasContracts, CIRCUIT_REGISTRY_ADDRESS, circuitRegistryAbi, USDT_DECIMALS } from "@/lib/contracts";
+import { hasApi, registerAgentApi } from "@/lib/api";
 
 const agentTypes = ["Research", "Data Processing", "Customer Support", "Dev Tools", "Trading", "Content", "Analytics"];
 
@@ -19,6 +23,7 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
   const [creditRequest, setCreditRequest] = useState("");
   const [typeOpen, setTypeOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [wdkLoading, setWdkLoading] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -32,12 +37,31 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
     return Object.keys(e).length === 0;
   };
 
+  const { writeContract, data: hash, isPending, error: writeError } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+
   const handleSubmit = () => {
     if (!validate()) return;
-    toast({
-      title: "Agent Registered",
-      description: `${name.trim()} submitted for credit scoring. You'll see the result in ~30 seconds.`,
-    });
+    const agentWallet = wallet.trim() as `0x${string}`;
+    const creditLimitWei = parseUnits(String(Math.floor(Number(creditRequest))), USDT_DECIMALS);
+
+    if (hasContracts && CIRCUIT_REGISTRY_ADDRESS) {
+      writeContract({
+        address: CIRCUIT_REGISTRY_ADDRESS,
+        abi: circuitRegistryAbi,
+        functionName: "registerAgent",
+        args: [agentWallet, creditLimitWei, 2],
+      });
+    } else {
+      toast({
+        title: "Agent Registered",
+        description: `${name.trim()} submitted for credit scoring. Deploy contracts to register on-chain.`,
+      });
+      resetAndClose();
+    }
+  };
+
+  const resetAndClose = () => {
     setName("");
     setType("");
     setWallet("");
@@ -45,6 +69,28 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
     setErrors({});
     onClose();
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Agent Registered On-Chain",
+        description: "Transaction confirmed. Your agent is now registered on Sepolia.",
+      });
+      resetAndClose();
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (writeError) {
+      toast({
+        title: "Transaction Failed",
+        description: writeError.message,
+        variant: "destructive",
+      });
+    }
+  }, [writeError]);
+
+  const isBusy = isPending || isConfirming;
 
   return (
     <AnimatePresence>
@@ -151,14 +197,40 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
                 <label className="text-xs text-muted-foreground font-medium flex items-center gap-2">
                   <Wallet className="w-3 h-3" /> WDK Wallet Address
                 </label>
-                <input
-                  type="text"
-                  placeholder="0x…"
-                  value={wallet}
-                  onChange={(e) => setWallet(e.target.value)}
-                  maxLength={42}
-                  className="w-full bg-secondary/50 border border-border/30 rounded-xl text-sm text-foreground font-mono px-4 py-3 placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="0x…"
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value)}
+                    maxLength={42}
+                    className="flex-1 bg-secondary/50 border border-border/30 rounded-xl text-sm text-foreground font-mono px-4 py-3 placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors"
+                  />
+                  {hasApi() && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="shrink-0"
+                      disabled={wdkLoading}
+                      onClick={async () => {
+                        setWdkLoading(true);
+                        const { walletAddress, error } = await registerAgentApi();
+                        setWdkLoading(false);
+                        if (error) {
+                          toast({ title: "WDK wallet failed", description: error, variant: "destructive" });
+                          return;
+                        }
+                        if (walletAddress) {
+                          setWallet(walletAddress);
+                          toast({ title: "WDK wallet created", description: "Address filled. Register this agent on-chain." });
+                        }
+                      }}
+                    >
+                      {wdkLoading ? "…" : "Create WDK wallet"}
+                    </Button>
+                  )}
+                </div>
                 {errors.wallet && <p className="text-xs text-destructive">{errors.wallet}</p>}
               </div>
 
@@ -185,8 +257,13 @@ const RegisterAgentModal = ({ open, onClose }: RegisterAgentModalProps) => {
               <p className="text-[10px] text-muted-foreground/50 text-center sm:text-left sm:max-w-[200px]">
                 Credit Scoring Agent will evaluate within ~30 seconds via on-chain data.
               </p>
-              <Button variant="heroSecondary" className="px-6 py-5 w-full sm:w-auto" onClick={handleSubmit}>
-                Submit for Scoring
+              <Button
+                variant="heroSecondary"
+                className="px-6 py-5 w-full sm:w-auto"
+                onClick={handleSubmit}
+                disabled={isBusy}
+              >
+                {isBusy ? "Confirming…" : hasContracts ? "Register on-chain" : "Submit for Scoring"}
               </Button>
             </div>
           </motion.div>

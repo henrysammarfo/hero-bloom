@@ -1,8 +1,9 @@
 # CIRCUIT — Project Overview & Roadmap
 
-> **Hackathon**: Hackathon Galáctica: WDK Edition 1 — Agent Wallets Track
-> **Network**: Sepolia Testnet
-> **Stack**: React + Vite + TypeScript + Tailwind CSS + shadcn/ui
+> **Hackathon**: Hackathon Galáctica: WDK Edition 1 — **Lending Bot / Agent Wallets Track**  
+> **Deadline**: 22 March 2026 (per Circuit Bible)  
+> **Network**: Sepolia Testnet  
+> **Stack**: React + Vite + TypeScript + Tailwind CSS + shadcn/ui + wagmi + RainbowKit (+ optional backend: Express, Supabase, WDK, OpenClaw)
 
 ---
 
@@ -11,6 +12,7 @@
 CIRCUIT is a **decentralized credit protocol for AI agents**. It enables autonomous agents to borrow stablecoins (USDT), execute revenue-generating tasks, and repay automatically — zero humans in the loop.
 
 ### Core Thesis
+
 AI agents are the next economic actors. They need financial infrastructure: credit lines, risk scoring, and on-chain settlement. CIRCUIT provides this.
 
 ---
@@ -20,137 +22,128 @@ AI agents are the next economic actors. They need financial infrastructure: cred
 ```
 ┌──────────────┐     ┌──────────────────┐     ┌─────────────────┐
 │  Operator UI │────▶│  Smart Contracts  │────▶│  Agent Wallets  │
-│  (React App) │     │  (Sepolia/EVM)    │     │  (WDK Powered)  │
+│  (React App) │     │  (Sepolia/EVM)    │     │  (WDK Powered)   │
 └──────────────┘     └──────────────────┘     └─────────────────┘
        │                      │                        │
        │              ┌───────┴────────┐               │
-       │              │  Lending Pool  │               │
+       │              │  CircuitPool    │               │
        │              │  (USDT Vault)  │               │
        │              └────────────────┘               │
        │                                               │
-       └───── Risk Engine ◀── On-chain Activity ──────┘
+       └───── CircuitRegistry ◀── On-chain Activity ──┘
 ```
 
-### Smart Contract Layer
-- **LendingPool.sol** — Manages USDT deposits from liquidity providers
-- **CreditLine.sol** — Issues credit lines to registered agents
-- **RiskEngine.sol** — Scores agents (A/B/C tiers) based on on-chain behavior
-- **AgentRegistry.sol** — Registers agent wallets with operator metadata
+### Smart Contract Layer (Sepolia)
+
+- **MockUSDT.sol** — Testnet ERC20 (6 decimals). Mintable by owner; permissionless faucet (10k USDT / 24h per wallet) for LPs and testers.
+- **CircuitRegistry.sol** — Registers agent wallets with operator, credit limit, risk tier (A/B/C). Tracks drawn/repaid and `totalDrawnByOperator` for the 20% cap. Only CircuitPool can update drawn/repaid.
+- **CircuitPool.sol** — Holds USDT; LPs deposit; registered agents draw and repay. **Bible risk caps:** max 5% of pool TVL per agent per draw, max 20% per operator (total drawn). Uses SafeERC20, ReentrancyGuard, CEI pattern.
 
 ### Frontend (Current)
-- Landing page with protocol explainer
-- Operator Dashboard with agent management
-- Sessions & History with transaction feed
-- Settings with wallet, alerts, credit defaults, and theme
+
+- Landing page with hero, how-it-works, lending pool
+- Wallet connect (wagmi + RainbowKit), Sepolia only, dashboard gated behind connect
+- Operator Dashboard — summary stats and agent table from **on-chain** (getAgentIdsByOperator + getAgent)
+- Live activity feed from CircuitPool **Draw/Repay events**
+- My Agents — grid of agents from registry (on-chain)
+- Agent detail — single agent by bytes32 id, history from pool events
+- Sessions & History — all Draw/Repay events from pool (on-chain)
+- **Faucet** — request test USDT (10k per 24h) for LP and testing
+- Settings — wallet identity, notifications, credit defaults, theme
+- Register Agent — on-chain registration (CircuitRegistry.registerAgent)
 
 ---
 
-## ✅ Completed (MVP Frontend)
-
-- [x] Landing page with hero, how-it-works, lending pool section
-- [x] Deep black dark theme + light mode support
-- [x] Sidebar navigation (Dashboard, Agents, Sessions, Settings)
-- [x] Dashboard with summary stats, agent credit table, live activity feed
-- [x] My Agents page with search, grid cards, status indicators
-- [x] Sessions page with filter chips (All/Draws/Repayments), grouped timeline
-- [x] Settings page with wallet identity, notifications, credit defaults, theme
-- [x] Agent detail page with credit utilization and activity
-- [x] Register Agent modal
-- [x] Responsive mobile design
-- [x] Brand assets (logo, favicon, X profile/cover, OG images)
-
----
-
-## 🔜 What's Next (Post-Hackathon Priorities)
+## ✅ Completed (MVP for Submission)
 
 ### Phase 1: Wallet Integration
-- [ ] Connect MetaMask/WalletConnect via `wagmi` + `RainbowKit`
-- [ ] Gate dashboard behind wallet authentication
-- [ ] Display real wallet address and ENS name
-- [ ] Sign transactions for agent registration
+
+- [x] Connect MetaMask/WalletConnect via wagmi + RainbowKit
+- [x] Gate dashboard behind wallet authentication
+- [x] Display real wallet address in navbar and Settings
+- [x] Sign transactions for agent registration
 
 ### Phase 2: Smart Contracts (Solidity)
-- [ ] Deploy `LendingPool.sol` on Sepolia
-- [ ] Deploy `CreditLine.sol` with draw/repay functions
-- [ ] Deploy `AgentRegistry.sol` for on-chain agent registration
-- [ ] Deploy `RiskEngine.sol` with scoring logic
-- [ ] Wire frontend to contract ABIs via `wagmi` hooks
 
-### Phase 3: Agent Wallet Integration (WDK)
-- [ ] Integrate WDK SDK for agent wallet creation
-- [ ] Implement autonomous draw/repay transaction flow
-- [ ] Add agent-signed transaction verification
-- [ ] Connect agent activity to risk scoring
+- [x] Deploy MockUSDT (6 decimals, faucet) on Sepolia
+- [x] Deploy CircuitRegistry (agent registration, operator → agents, totalDrawnByOperator for 20% cap)
+- [x] Deploy CircuitPool (deposit, draw, repay) with SafeERC20, ReentrancyGuard, **5% per-agent and 20% per-operator risk caps** (Circuit Bible)
+- [x] Wire frontend to contract ABIs via wagmi hooks
+- [x] Hardhat tests for MockUSDT, CircuitRegistry, CircuitPool (including risk-cap tests)
 
 ### Phase 4: Real Data
-- [ ] Replace mock data with on-chain reads (events, balances)
-- [ ] Real-time WebSocket for live activity feed
-- [ ] Transaction history from Sepolia explorer API
-- [ ] Agent performance metrics from contract events
+
+- [x] Replace mock data with on-chain reads (getAgentIdsByOperator, getAgent)
+- [x] Pool Draw/Repay events for Sessions and Dashboard activity
+- [x] Agent detail and history from chain
+
+### Faucet & Docs
+
+- [x] On-chain faucet (MockUSDT.requestFaucet), Faucet page in app
+- [x] ENV_KEYS.md, DEPLOY.md, FAUCET.md, README and CIRCUIT_PLAN up to date
+
+---
+
+## 🔜 What's Next (Post-Hackathon)
+
+### Phase 3: Agent Wallet Integration (WDK)
+
+- [ ] Integrate WDK SDK for agent wallet creation
+- [ ] Autonomous draw/repay flow from agent wallets
+- [ ] Agent-signed transaction verification
+- [ ] Connect agent activity to risk scoring
 
 ### Phase 5: Production
+
 - [ ] Mainnet deployment (Arbitrum/Base)
 - [ ] Audit smart contracts
-- [ ] Add liquidity provider dashboard
-- [ ] Implement governance for risk parameters
+- [ ] Liquidity provider dashboard (deposit UI, APY)
+- [ ] Governance for risk parameters
 - [ ] Multi-token support (USDC, DAI)
 
 ---
 
 ## 📁 Brand Assets
 
-| Asset | Path | Usage |
-|-------|------|-------|
-| Logo (SVG) | `src/assets/logo.svg` | Sidebar, navbar |
-| Logo (PNG) | `src/assets/circuit-logo.png` | Collapsed sidebar, pitch decks |
-| Favicon | `public/circuit-favicon.png` | Browser tab icon |
-| X Profile | `public/circuit-profile.png` | Twitter/X avatar |
-| X Cover | `public/circuit-x-cover.png` | Twitter/X header banner |
+| Asset   | Path                        | Usage                |
+|--------|-----------------------------|----------------------|
+| Logo   | `src/assets/logo.svg`       | Sidebar, navbar      |
+| PNG    | `src/assets/circuit-logo.png` | Collapsed sidebar   |
+| Favicon| `public/circuit-favicon.png`   | Browser tab          |
+| X      | `public/circuit-profile.png`, `public/circuit-x-cover.png` | Social |
 
 ---
 
-## 🛠️ Local Development
+## 🛠️ Commands
 
 ```bash
-git clone <YOUR_GIT_URL>
-cd circuit
 npm install
-npm run dev
+npm run dev          # Dev server
+npm run build        # Production build
+npm run compile      # Compile contracts
+npm run test:contracts  # Run contract tests
+npm run deploy:sepolia # Deploy to Sepolia
 ```
-
-### Key Commands
-- `npm run dev` — Start dev server
-- `npm run build` — Production build
-- `npm run test` — Run tests
 
 ---
 
 ## 📋 DoraHacks Submission Checklist
 
-- [ ] Demo video (2-3 min walkthrough)
-- [ ] GitHub repo (public, with README)
+- [ ] Demo video (2–3 min walkthrough)
+- [ ] GitHub repo (public, README)
 - [ ] Live deployment URL
 - [ ] Project description on DoraHacks
 - [ ] Team info
 - [ ] Smart contract addresses (Sepolia)
 - [ ] Technical architecture diagram
-- [ ] Pitch deck (5-7 slides)
-
-### Pitch Deck Outline
-1. **Problem**: AI agents can't access financial infrastructure
-2. **Solution**: CIRCUIT — decentralized credit for autonomous agents
-3. **How it works**: Register → Score → Borrow → Execute → Repay
-4. **Demo**: Live walkthrough of operator dashboard
-5. **Architecture**: Smart contracts + WDK agent wallets
-6. **Market**: Growing AI agent economy ($X TAM)
-7. **Team & Ask**: Background + what's next
+- [ ] Pitch deck (5–7 slides)
 
 ---
 
-## 📚 Key References
+## 📚 References
 
-- [WDK Documentation](https://docs.aspect.build/wdk)
-- [Hackathon Galáctica Info](https://dorahacks.io)
-- [wagmi Docs](https://wagmi.sh)
-- [RainbowKit](https://www.rainbowkit.com)
-- [Sepolia Faucet](https://sepoliafaucet.com)
+- **Circuit Bible** — Lending Bot track brief: risk controls (5% per agent, 20% per operator), API vision (register, score, draw, repay, pool stats), 9-day build plan, demo script.
+- [SECURITY.md](./SECURITY.md) — Threat model, CEI/ReentrancyGuard/SafeERC20, risk limits, no secrets in client.
+- [WDK Documentation](https://docs.wdk.tether.io/)
+- [wagmi](https://wagmi.sh), [RainbowKit](https://www.rainbowkit.com)
+- [Sepolia Faucet](https://www.alchemy.com/faucets/ethereum-sepolia)

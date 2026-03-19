@@ -2,6 +2,8 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.svg";
 
@@ -16,6 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isConnected } = useAccount();
 
   const handleNavClick = (item: typeof navItems[number]) => {
     setMobileOpen(false);
@@ -59,14 +62,20 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="heroSecondary"
-            size="sm"
-            className="rounded-full px-4 py-2 hidden sm:inline-flex"
-            onClick={() => navigate("/dashboard")}
-          >
-            Launch App
-          </Button>
+          {isConnected ? (
+            <Button
+              variant="heroSecondary"
+              size="sm"
+              className="rounded-full px-4 py-2 hidden sm:inline-flex"
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </Button>
+          ) : (
+            <div className="hidden sm:block">
+              <ConnectButton />
+            </div>
+          )}
 
           {/* Mobile hamburger */}
           <button
@@ -98,13 +107,19 @@ const Navbar = () => {
                   {item.label}
                 </button>
               ))}
-              <Button
-                variant="heroSecondary"
-                className="w-full mt-2 rounded-full"
-                onClick={() => { setMobileOpen(false); navigate("/dashboard"); }}
-              >
-                Launch App
-              </Button>
+              {isConnected ? (
+                <Button
+                  variant="heroSecondary"
+                  className="w-full mt-2 rounded-full"
+                  onClick={() => { setMobileOpen(false); navigate("/dashboard"); }}
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <div className="w-full mt-2" onClick={() => setMobileOpen(false)}>
+                  <ConnectButton />
+                </div>
+              )}
             </div>
           </motion.div>
         )}
