@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
+import { useAccount } from "wagmi";
 import { Sun, Moon, Copy, Check, Wallet, Bell, CreditCard, Palette, User } from "lucide-react";
 
 const SettingsPage = () => {
   const { theme, toggleTheme } = useTheme();
+  const { address } = useAccount();
   const [copied, setCopied] = useState(false);
   const [notifications, setNotifications] = useState({
     draws: true,
@@ -15,9 +17,10 @@ const SettingsPage = () => {
   const [defaultLimit, setDefaultLimit] = useState("300");
   const [activeSection, setActiveSection] = useState("wallet");
 
-  const walletAddress = "0x7a3f8b2ce21c4B8d9F1d5B3e2A7c3A9f";
+  const walletAddress = address ?? "";
 
   const handleCopy = () => {
+    if (!walletAddress) return;
     navigator.clipboard.writeText(walletAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -71,10 +74,12 @@ const SettingsPage = () => {
                 <label className="text-xs text-muted-foreground/60 uppercase tracking-wider">Connected Wallet</label>
                 <div className="mt-1.5 flex items-center gap-2 bg-secondary/20 border border-border/10 rounded-xl px-3 sm:px-4 py-3">
                   <span className="w-2 h-2 rounded-full bg-success animate-pulse shrink-0" />
-                  <span className="text-xs sm:text-sm font-mono text-foreground flex-1 truncate">{walletAddress}</span>
-                  <button onClick={handleCopy} className="p-1.5 rounded-lg hover:bg-secondary transition-colors shrink-0">
-                    {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
-                  </button>
+                  <span className="text-xs sm:text-sm font-mono text-foreground flex-1 truncate">{walletAddress || "Not connected"}</span>
+                  {walletAddress && (
+                    <button onClick={handleCopy} className="p-1.5 rounded-lg hover:bg-secondary transition-colors shrink-0" aria-label="Copy address">
+                      {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
+                    </button>
+                  )}
                 </div>
               </div>
               <div>

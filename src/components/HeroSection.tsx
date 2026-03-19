@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const { isConnected } = useAccount();
 
   return (
     <section className="relative overflow-hidden" style={{ background: "hsl(0, 0%, 0%)" }}>
@@ -24,9 +27,13 @@ const HeroSection = () => {
           Borrow, complete, earn, repay — zero humans in the loop.
         </p>
         <div className="mt-8 mb-12 sm:mb-[66px]">
-          <Button variant="heroSecondary" className="px-[29px] py-[24px]" onClick={() => navigate("/dashboard")}>
-            Register Agent
-          </Button>
+          {isConnected ? (
+            <Button variant="heroSecondary" className="px-[29px] py-[24px]" onClick={() => navigate("/dashboard")}>
+              Open Dashboard
+            </Button>
+          ) : (
+            <ConnectButton />
+          )}
         </div>
       </div>
     </section>

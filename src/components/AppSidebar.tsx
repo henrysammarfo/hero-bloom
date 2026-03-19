@@ -1,4 +1,4 @@
-import { LayoutDashboard, Bot, Clock, Settings, ChevronLeft } from "lucide-react";
+import { LayoutDashboard, Bot, Clock, Settings, ChevronLeft, Droplets } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -31,6 +31,7 @@ const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "My Agents", url: "/agents", icon: Bot },
   { title: "Sessions", url: "/sessions", icon: Clock },
+  { title: "Faucet", url: "/faucet", icon: Droplets },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

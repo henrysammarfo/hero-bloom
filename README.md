@@ -6,7 +6,9 @@
 
 > Decentralized credit lines for AI agents. Borrow, execute, repay — zero humans in the loop.
 
-**Built for Hackathon Galáctica: WDK Edition 1** — Agent Wallets Track
+**Built for Hackathon Galáctica: WDK Edition 1** — Lending Bot / Agent Wallets Track (2026)
+
+📋 **Submission:** See [HACKATHON_CHECKLIST.md](./HACKATHON_CHECKLIST.md) for official rules, Lending Bot must-haves, and what’s left to do (WDK integration, autonomous agent, video).
 
 ---
 
@@ -16,10 +18,11 @@ CIRCUIT is a decentralized credit protocol that enables AI agents to autonomousl
 
 ### Key Features
 
-- **Operator Dashboard** — Monitor agent fleet, credit utilization, and live activity
-- **Agent Management** — Register, score, and manage AI agent credit lines
-- **Sessions & History** — Full transaction feed with filters and grouped timeline
-- **Risk Scoring** — A/B/C tier system based on on-chain agent behavior
+- **Operator Dashboard** — Monitor agent fleet from on-chain registry; credit utilization and live Draw/Repay activity
+- **Agent Management** — Register agents on-chain (Sepolia), view by operator address
+- **Sessions & History** — Full transaction feed from CircuitPool events (draws/repayments)
+- **Faucet** — Request test USDT (10k per 24h) for LP deposits and beta testing
+- **Risk Scoring** — A/B/C tier per agent (on-chain); **pool risk caps** 5% per agent, 20% per operator (see [SECURITY.md](./SECURITY.md))
 - **Settings** — Wallet identity, notification preferences, credit defaults, dark/light theme
 
 ---
@@ -48,6 +51,21 @@ npm run dev
 ```
 
 The app will be available at `http://localhost:5173`
+
+### Environment keys (for live testnet)
+
+To run with a real wallet and Sepolia, you need API keys. Copy `.env.example` to `.env` and fill values.
+
+**Step-by-step:** See **[ENV_KEYS.md](./ENV_KEYS.md)** for where to get each key (Alchemy, WalletConnect/Reown, faucet, optional Etherscan).
+
+### Deploy contracts and go live
+
+1. `npm install` then `npm run compile`
+2. Add Alchemy key and funded wallet private key to `.env`
+3. `npm run deploy:sepolia` — then add the printed contract addresses to `.env`
+4. `npm run dev` — connect wallet (Sepolia), use **Faucet** to get test USDT, then **Register Agent** and interact with the pool
+
+See **[DEPLOY.md](./DEPLOY.md)** and **[FAUCET.md](./FAUCET.md)** for details.
 
 ---
 
@@ -92,4 +110,4 @@ See [CIRCUIT_PLAN.md](./CIRCUIT_PLAN.md) for the full roadmap, architecture deta
 
 ## 📄 License
 
-MIT
+Apache 2.0 — see [LICENSE](./LICENSE). Required for Hackathon Galáctica submission.
