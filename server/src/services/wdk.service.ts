@@ -107,7 +107,7 @@ async function rememberWalletIndex(wallet: string, index: number): Promise<void>
   await persistWalletMap();
 }
 
-async function resolveManagedIndex(wallet: Address): Promise<number | undefined> {
+export async function resolveManagedIndex(wallet: Address): Promise<number | undefined> {
   await loadWalletMapIfNeeded();
   const key = wallet.toLowerCase();
   const cached = walletToIndex.get(key);
@@ -285,4 +285,13 @@ export async function getAgentTokenBalance(wallet: Address): Promise<bigint> {
   const account = await wdk.getAccount("ethereum", idx);
   const balance = await account.getTokenBalance(config.mockUsdtAddress);
   return balance;
+}
+
+/**
+ * Get the address of the main operator wallet (account index 0).
+ */
+export async function getOperatorAddress(): Promise<Address> {
+  const wdk = getWdk();
+  const account = await wdk.getAccount("ethereum", 0);
+  return (await account.getAddress()) as Address;
 }
