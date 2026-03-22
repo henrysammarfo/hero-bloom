@@ -248,3 +248,11 @@
 {"ts":"2026-03-21T11:28:05.771Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
 {"ts":"2026-03-21T11:29:03.290Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
 {"ts":"2026-03-21T11:52:34.447Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
+{"ts":"2026-03-22T22:23:57.493Z","type":"AGENT_REGISTER_WALLET","wallet":"0x48e2E5648cFbDa4ADD32bB2aCab70D1F81583729"}
+{"ts":"2026-03-22T22:31:19.963Z","type":"AGENT_REGISTER_WALLET","wallet":"0x65f8BB8603C5E04845844AE7b2e004BC0A9Fb988"}
+{"ts":"2026-03-22T22:49:56.435Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
+{"ts":"2026-03-22T22:49:59.138Z","type":"STRATEGY_DRAW","agentId":"0x70f0430d5b597ef4bc8bc4cd0cf45c18974652a5a145f80156a6f9843e7600b3","wallet":"0x5ca5752A3e4263faC915F4f86F034637b8D406D3","amountUsdt":52,"reason":"Best APY 143174.71% > 8% threshold","txHash":"0xd6e5efa6a1fc80ecf6b858a753ea89c115bdab425cc35c52375c163d00f61710"}
+{"ts":"2026-03-22T22:53:50.296Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
+{"ts":"2026-03-22T22:55:53.163Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
+{"ts":"2026-03-22T22:57:51.088Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}
+{"ts":"2026-03-22T22:59:50.095Z","type":"OPPORTUNITIES_FETCH","meta":{"limit":10,"count":10}}

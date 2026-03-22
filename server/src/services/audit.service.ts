@@ -10,7 +10,9 @@ type AuditEvent = {
     | "AGENT_REQUEST_FAUCET"
     | "AGENT_TRANSFER"
     | "REPAYMENT_MONITOR_REPAY"
-    | "OPPORTUNITIES_FETCH";
+    | "OPPORTUNITIES_FETCH"
+    | "STRATEGY_DRAW"
+    | "STRATEGY_REPAY";
   agentId?: string;
   wallet?: string;
   amountUsdt?: number;
