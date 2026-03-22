@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "wallet": "0x722614244882285ba474a12325f3e4fe96762406",
+      "index": 1
+    },
+    {
+      "wallet": "0xeaddff92cea823bfceed1b74cf4bef150daabbde",
+      "index": 3
+    },
+    {
+      "wallet": "0xd231d9d97391a01a295677af7087b81b2a7d4dac",
+      "index": 4
+    },
+    {
+      "wallet": "0xc78c0a0df22a58d31186578fe6aada5e37d7b242",
+      "index": 6
+    },
+    {
+      "wallet": "0x5ca5752a3e4263fac915f4f86f034637b8d406d3",
+      "index": 8
+    }
+  ]
+}

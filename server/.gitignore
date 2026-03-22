@@ -1,0 +1,21 @@
+# Environment — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Logs
+*.log
+logs/
+
+# SSH / API keys
+*.key
+*.pem
+*.ppk

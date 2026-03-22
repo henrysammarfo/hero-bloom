@@ -9,6 +9,7 @@ import { opportunitiesRouter } from "./routes/opportunities.js";
 import { operatorRouter } from "./routes/operator.js";
 import { poolRouter } from "./routes/pool.js";
 import { startRepaymentMonitor } from "./services/repayment.service.js";
+import { startAgentStrategyService } from "./services/agent.strategy.service.js";
 
 assertConfig();
 
@@ -28,4 +29,5 @@ app.use("/pool", poolRouter);
 app.listen(config.port, () => {
   console.log(`CIRCUIT API listening on http://localhost:${config.port}`);
   startRepaymentMonitor();
+  startAgentStrategyService();
 });

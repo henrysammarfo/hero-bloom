@@ -141,6 +141,14 @@ export async function createAgentWallet(): Promise<{ address: string }> {
 }
 
 /**
+ * Get all wallet addresses we have ever created/managed.
+ */
+export async function getAllManagedWallets(): Promise<string[]> {
+  await loadWalletMapIfNeeded();
+  return Array.from(walletToIndex.keys());
+}
+
+/**
  * Get account index for a wallet (only for wallets we created via createAgentWallet).
  */
 export function getAccountIndexForWallet(wallet: Address): number | undefined {
