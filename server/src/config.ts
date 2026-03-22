@@ -34,6 +34,8 @@ export const config = {
   walletMapPath: process.env.CIRCUIT_WALLET_MAP_PATH ?? ".circuit-wallet-map.json",
   /** Max derivation index scan for recovering older wallets if map is stale. */
   walletScanLimit: parseInt(process.env.CIRCUIT_WALLET_SCAN_LIMIT ?? "200", 10),
+  /** Commas-separated list of agentIds for the strategy service to manage autonomously. */
+  managedAgentIds: (process.env.CIRCUIT_MANAGED_AGENT_IDS ?? "").split(",").map(s => s.trim()).filter(Boolean),
 } as const;
 
 export function assertConfig(): void {
