@@ -14,7 +14,7 @@ import { startAgentStrategyService } from "./services/agent.strategy.service.js"
 assertConfig();
 
 const app = express();
-app.use(cors({ origin: config.frontendUrl, credentials: true }));
+app.use(cors({ origin: true, credentials: true })); // Allow all origins for the hackathon
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
