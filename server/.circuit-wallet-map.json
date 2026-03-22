@@ -20,6 +20,14 @@
     {
       "wallet": "0x5ca5752a3e4263fac915f4f86f034637b8d406d3",
       "index": 8
+    },
+    {
+      "wallet": "0x48e2e5648cfbda4add32bb2acab70d1f81583729",
+      "index": 9
+    },
+    {
+      "wallet": "0x65f8bb8603c5e04845844ae7b2e004bc0a9fb988",
+      "index": 10
     }
   ]
 }
