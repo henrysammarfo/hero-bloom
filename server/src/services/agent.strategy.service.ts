@@ -129,28 +129,20 @@ export async function startAgentStrategyService() {
 
   setInterval(async () => {
     try {
-      // For the hackathon demo, we'll discover agents by operator.
-      // In a real app, we'd iterate over all registered operators or monitor Registry events.
-      // For now, we'll use the wallet map to find all wallets we've ever created.
-      const agents = await wdk.getAllManagedWallets(); // I need to implement this in wdk.service.ts
-      
-      for (const wallet of agents) {
-        // Find agentId on-chain for this wallet
-        // This is a bit expensive, but fine for a demo.
-        // In production, we'd store wallet -> agentId in our DB.
-        const operator = (await wdk.getAccountIndexForWallet(wallet as `0x${string}`)) ? await wdk.getOperatorAddress() : null;
-        // Actually, we'll just allow the user to specify which agents to manage via env or just manage all.
-        // Let's use the audit log or just try to find them by operator.
+      // 1. Discover the Operator Address (Account 0 in the WDK vault)
+      const operator = await wdk.getOperatorAddress();
+
+      // 2. Autonomously fetch ALL agent IDs registered under this operator on-chain
+      const agentIds = await getAgentIdsByOperator(operator);
+
+      if (agentIds.length === 0) {
+        return;
       }
 
-      // SIMPLIFIED for demo: The user likely has one or two agents. 
-      // We'll just monitor the ones that have ever drawn (from the set in repayment service) 
-      // AND explicitly allow the user to provide a list of Agent IDs to manage persistently.
-      
-      for (const id of config.managedAgentIds) {
+      // 3. Tick each discovered agent
+      for (const id of agentIds) {
         await performAgentTick(id as Hash);
       }
-
     } catch (e) {
       console.error("[STRATEGY] Loop error:", e);
     }
