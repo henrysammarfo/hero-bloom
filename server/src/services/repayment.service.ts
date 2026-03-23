@@ -27,10 +27,11 @@ export function startRepaymentMonitor(): void {
         if (!agent || !agent.active || agent.drawn <= 0n) continue;
         checked += 1;
         const balance = await wdk.getAgentTokenBalance(agent.wallet);
-        // Contract enforces repay <= drawn. Repay principal only from monitor.
-        // Any "interest" should be handled as a separate transfer or accounting layer.
         const repayAmount = agent.drawn;
-        if (balance >= repayAmount) {
+        // Only auto-repay if the agent has a surplus (revenue earned beyond the debt).
+        // Demo buffer: 5 USDT of revenue required to trigger auto-repayment.
+        const buffer = 5_000_000n;
+        if (balance >= repayAmount + buffer) {
           const tx = await wdk.signAndSendRepay(agent.wallet, id as Hash, repayAmount);
           repaid += 1;
           await audit({
