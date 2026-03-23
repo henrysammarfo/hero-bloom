@@ -55,16 +55,13 @@ poolRouter.get("/activity", async (_req, res) => {
           return null;
         }
       })
-      .filter(
-        (e) =>
-          e &&
-          (e.type === "AGENT_DRAW" ||
-            e.type === "AGENT_REPAY" ||
-            e.type === "STRATEGY_DRAW" ||
-            e.type === "STRATEGY_REPAY" ||
-            e.type === "REPAYMENT_MONITOR_REPAY")
-      );
-    res.json({ success: true, activity: actions });
+      .filter((e) => e && e.type); // Include all valid audit types
+    res.json({
+      success: true,
+      activity: actions,
+      events: actions, // Alias for compatibility
+      history: actions, // Alias for compatibility
+    });
   } catch (e) {
     res.status(500).json({ success: false, error: "Failed to load activity" });
   }
