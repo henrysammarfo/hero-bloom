@@ -29,10 +29,10 @@ export const config = {
   writeEnabled: (process.env.CIRCUIT_WRITE_ENABLED ?? "true").toLowerCase() === "true",
   /** Per-agent cooldown in ms (prevents tx spam). */
   agentActionCooldownMs: parseInt(process.env.CIRCUIT_AGENT_COOLDOWN_MS ?? "60000", 10),
-  /** Audit log (JSONL). */
-  auditLogPath: path.resolve(process.cwd(), process.env.CIRCUIT_AUDIT_LOG_PATH ?? "circuit-audit.jsonl"),
-  /** Persistent wallet-index map for WDK-derived agent wallets. */
-  walletMapPath: path.resolve(process.cwd(), process.env.CIRCUIT_WALLET_MAP_PATH ?? ".circuit-wallet-map.json"),
+  /** Audit log (JSONL). Force absolute path for PM2 stability. */
+  auditLogPath: path.resolve("/home/ubuntu", process.env.CIRCUIT_AUDIT_LOG_PATH ?? "circuit-audit.jsonl"),
+  /** Persistent wallet-index map. Force absolute path for PM2 stability. */
+  walletMapPath: path.resolve("/home/ubuntu", process.env.CIRCUIT_WALLET_MAP_PATH ?? ".circuit-wallet-map.json"),
   /** Max derivation index scan for recovering older wallets if map is stale. */
   walletScanLimit: parseInt(process.env.CIRCUIT_WALLET_SCAN_LIMIT ?? "200", 10),
   /** Commas-separated list of agentIds for the strategy service to manage autonomously. */

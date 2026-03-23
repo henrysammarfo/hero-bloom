@@ -59,7 +59,7 @@ async function performAgentTick(agentId: Hash) {
     if (drawnUsdt > 0) {
       let repayReason = "";
       if (pd > 0.5) repayReason = `Risk too high (PD: ${pd})`;
-      else if (bestApy < 6) repayReason = `APY too low (${bestApy}%)`;
+      // else if (bestApy < 6) repayReason = `APY too low (${bestApy}%)`;
       else if (revenueReceived) repayReason = `Revenue received (+50 USDT)`;
 
       if (repayReason) {
