@@ -2,6 +2,7 @@
  * Backend config from env. Validate required keys at startup.
  */
 import "dotenv/config";
+import path from "node:path";
 
 const required = ["ALCHEMY_SEPOLIA_URL", "CIRCUIT_REGISTRY_ADDRESS", "CIRCUIT_POOL_ADDRESS", "MOCK_USDT_ADDRESS"] as const;
 
@@ -29,9 +30,9 @@ export const config = {
   /** Per-agent cooldown in ms (prevents tx spam). */
   agentActionCooldownMs: parseInt(process.env.CIRCUIT_AGENT_COOLDOWN_MS ?? "60000", 10),
   /** Audit log (JSONL). */
-  auditLogPath: process.env.CIRCUIT_AUDIT_LOG_PATH ?? "circuit-audit.jsonl",
+  auditLogPath: path.resolve(process.cwd(), process.env.CIRCUIT_AUDIT_LOG_PATH ?? "circuit-audit.jsonl"),
   /** Persistent wallet-index map for WDK-derived agent wallets. */
-  walletMapPath: process.env.CIRCUIT_WALLET_MAP_PATH ?? ".circuit-wallet-map.json",
+  walletMapPath: path.resolve(process.cwd(), process.env.CIRCUIT_WALLET_MAP_PATH ?? ".circuit-wallet-map.json"),
   /** Max derivation index scan for recovering older wallets if map is stale. */
   walletScanLimit: parseInt(process.env.CIRCUIT_WALLET_SCAN_LIMIT ?? "200", 10),
   /** Commas-separated list of agentIds for the strategy service to manage autonomously. */
