@@ -13,6 +13,7 @@ dist
 
 # Logs
 *.log
+*.jsonl
 logs/
 
 # SSH / API keys
