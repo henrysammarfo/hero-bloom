@@ -8,15 +8,34 @@ import { config } from "../config.js";
 
 export const poolRouter = Router();
 
-/** GET /pool/stats — TVL and basic stats from chain. */
+/** GET /pool/stats — TVL and basic stats from chain + recent activity. */
 poolRouter.get("/stats", async (_req, res) => {
   try {
     const poolBalance = await getPoolBalance();
     const tvlUsdt = Number(poolBalance) / 1e6;
+
+    // Fetch activity for the dashboard panel
+    const raw = await readFile(config.auditLogPath, "utf8").catch(() => "");
+    const lines = raw.split("\n").filter(Boolean).slice(-50).reverse();
+    const actions = lines
+      .map((l) => {
+        try {
+          return JSON.parse(l);
+        } catch {
+          return null;
+        }
+      })
+      .filter((e) => e && e.type);
+
     res.json({
       success: true,
       totalTvlUsdt: tvlUsdt,
       poolBalanceRaw: poolBalance.toString(),
+      // Add multiple variants for frontend compatibility
+      activity: actions,
+      events: actions,
+      history: actions,
+      sessions: actions,
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
