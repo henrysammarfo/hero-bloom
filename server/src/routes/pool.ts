@@ -2,7 +2,9 @@
  * Pool routes: stats (from chain), deposit (record or forward — LP can use frontend to deposit to contract).
  */
 import { Router } from "express";
+import { readFile } from "node:fs/promises";
 import { getPoolBalance } from "../services/chain.service.js";
+import { config } from "../config.js";
 
 export const poolRouter = Router();
 
@@ -37,5 +39,33 @@ poolRouter.post("/deposit", async (req, res) => {
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     res.status(500).json({ success: false, error: msg });
+  }
+});
+
+/** GET /pool/activity — recent draw and repay events from the audit log. */
+poolRouter.get("/activity", async (_req, res) => {
+  try {
+    const raw = await readFile(config.auditLogPath, "utf8").catch(() => "");
+    const lines = raw.split("\n").filter(Boolean).slice(-50).reverse();
+    const actions = lines
+      .map((l) => {
+        try {
+          return JSON.parse(l);
+        } catch {
+          return null;
+        }
+      })
+      .filter(
+        (e) =>
+          e &&
+          (e.type === "AGENT_DRAW" ||
+            e.type === "AGENT_REPAY" ||
+            e.type === "STRATEGY_DRAW" ||
+            e.type === "STRATEGY_REPAY" ||
+            e.type === "REPAYMENT_MONITOR_REPAY")
+      );
+    res.json({ success: true, activity: actions });
+  } catch (e) {
+    res.status(500).json({ success: false, error: "Failed to load activity" });
   }
 });

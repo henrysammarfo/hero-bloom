@@ -14,6 +14,7 @@ type AuditEvent = {
     | "STRATEGY_DRAW"
     | "STRATEGY_REPAY";
   agentId?: string;
+  reason?: string;
   wallet?: string;
   amountUsdt?: number;
   amountRaw?: string;
